@@ -1,17 +1,27 @@
-import { getUserSession } from "@/lib/auth";
-import { permanentRedirect, redirect } from "next/navigation";
-
-export const revalidate = 3600;
+import { signIn } from "@/auth"
 
 
-export default async function page() {
-
-  // const sessionUser = await getUserSession();
-
-  // if(sessionUser?.isOnboarded === false) {
-  //   redirect(`/onboarding`)
-  // } 
 
 
-  return <div>Page</div>
+function SignIn() {
+  return (
+    <form
+      action={async () => {
+        "use server"
+        await signIn()
+      }}
+    >
+      <button type="submit">Sign in</button>
+    </form>
+  )
 }
+
+
+
+export default function page() {
+  return (
+    <SignIn/>
+  )
+}
+
+

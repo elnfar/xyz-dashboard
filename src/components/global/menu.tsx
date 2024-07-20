@@ -14,19 +14,18 @@ import {
   TooltipContent,
   TooltipProvider
 } from "@/components/ui/tooltip";
-import { Session } from "next-auth";
-import { Idle } from "@prisma/client";
+import { Idle, Tenant, User } from "@prisma/client";
 import { UserAvatar } from "./Avatar";
 import { signOut } from "@/auth/helper";
 
 interface MenuProps {
   isOpen: boolean | undefined;
   idle: Idle;
-  session: Session;
+  user: User ;
   workplaceSlug: string;
 }
 
-export function Menu({ workplaceSlug, isOpen, session }: MenuProps) {
+export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
   const pathname = usePathname();
 
   const menuList = getMenuList();
@@ -114,10 +113,10 @@ export function Menu({ workplaceSlug, isOpen, session }: MenuProps) {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <div className="">
-                    {!!session.user && (
+                    {!!user && (
                       <Link href={`/${workplaceSlug}/(dashboard)/account`} className="rounded-full w-10 h-10 mx-auto flex items-center justify-center border-2">
                         <UserAvatar
-                          src={session.user?.image || ''}
+                          src={user?.image || ''}
                         />
                       </Link>
                     )}

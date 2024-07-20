@@ -15,8 +15,6 @@ export async function generateMetadata({ params }:{
 
   const user = await getUserSession();
 
-
-
   return {
     title: `${user?.tenant.name} - Home`, 
   }
@@ -28,15 +26,13 @@ export default async function DashboardLayout({children, params}:{
 }) {
 
   const { workplaceSlug } = params
+  const user = await getUserSession();
 
 
-
-
-  const session = await auth();
 
   const userIdleActivity = await prismaClient.activity.findFirst({
     where: {
-      userId: session?.user?.id,
+      userId: user?.id,
       endTime: null,
     },
     select:{
@@ -47,12 +43,11 @@ export default async function DashboardLayout({children, params}:{
  const projects = await prismaClient.project.findMany({
   where: {
     //@ts-ignore
-    tenantId:session?.user?.tenant.id
+    tenantId:user?.tenant.id
   }
  })
 
 
- const user = await getUserSession();
 
     //  if(user?.isOnboarded === true) {
     //     redirect(`/${user.tenant.name}/dashboard`);
@@ -66,7 +61,7 @@ export default async function DashboardLayout({children, params}:{
     <div className=' bg-[rgb(25,25,25)]'>
       <div className='flex justify-between'>
         <div className='overflow-y-scroll h-screen w-24'>
-          <Sidebar workplaceSlug={workplaceSlug} session={session!} idle={userIdleActivity?.idle!}/>
+          <Sidebar workplaceSlug={workplaceSlug} user={user!} idle={userIdleActivity?.idle!}/>
         </div>
         
           <div className='h-screen w-full px-4'>

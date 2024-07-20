@@ -9,7 +9,6 @@ export const getSessionUser = async () => {
 
     try
      {
-
     
     const user = await currentUser()
 

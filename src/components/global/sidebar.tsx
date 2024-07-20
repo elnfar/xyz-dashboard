@@ -10,18 +10,18 @@ import { Menu } from "@/components/global/menu";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import Image from "next/image";
 import { SidebarToggle } from "./sidebar-toggle";
-import { Session, User } from "next-auth";
+import { Session } from "next-auth";
 import { SignOut } from "../sign-out";
 import { SignIn } from "../sign-in";
-import { Activity, Idle } from "@prisma/client";
+import { Activity, Idle, User } from "@prisma/client";
 
 
 type IdleType = {
   idle:Idle
 }
 
-export function Sidebar({session, idle,workplaceSlug}:{
-  session:Session,
+export function Sidebar({user, idle,workplaceSlug}:{
+  user:User,
   idle: Idle,
   workplaceSlug:string
 }) {
@@ -71,7 +71,7 @@ export function Sidebar({session, idle,workplaceSlug}:{
         {/* <div className="w-24 h-24 bg-slate-300 p-4 rounded-full">
         </div>  */}
         {/* {!session ? <SignIn/> : <SignOut/>}  */}
-        <Menu workplaceSlug={workplaceSlug} isOpen={sidebar?.isOpen} idle={idle} session={session}/>
+        <Menu workplaceSlug={workplaceSlug} isOpen={sidebar?.isOpen} idle={idle} user={user}/>
       </div>
     </aside>
   );

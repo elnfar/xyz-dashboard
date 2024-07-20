@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthenticationWrapper from "@/lib/wrappers/auth-wrapper";
-import { getUserSession } from "@/lib/auth";
 import Providers from "@/components/providers/progress-provider";
+import { getUserSession } from "@/lib/auth";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,14 +20,19 @@ export default async function RootLayout({
 }>) 
 {
 
+
+
   const user = await getUserSession();
 
+  console.log(user);
+  
+  
 
   return (
 
     <html lang="en" className=" bg-[rgb(25,25,25)]">      
       <body className={inter.className}>
-        <AuthenticationWrapper user={user}>
+        <AuthenticationWrapper >
           <Providers>
               {children}
           </Providers>

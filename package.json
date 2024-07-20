@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@auth/core": "^0.32.0",
-    "@auth/prisma-adapter": "^2.2.0",
-    "@clerk/nextjs": "^5.1.4",
+    "@auth/prisma-adapter": "^2.4.1",
+    "@clerk/nextjs": "^5.2.4",
     "@hookform/resolvers": "^3.6.0",
     "@nextui-org/input": "^2.2.2",
     "@nextui-org/react": "^2.4.2",

@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { cookies } from "next/headers";
 
+
 const prisma = new PrismaClient();
 
 
@@ -13,8 +14,8 @@ const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
       authorization: { params: { access_type: "offline", prompt: "consent" } },
       allowDangerousEmailAccountLinking:true
     }),
@@ -94,6 +95,9 @@ const authOptions: NextAuthConfig = {
   basePath: BASE_PATH,
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,
+
+  
 };
+
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);

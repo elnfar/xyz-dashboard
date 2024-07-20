@@ -9,21 +9,24 @@ export const session = async ({ session, token }: any) => {
 }
 
 export const getUserSession = cache(async() => {
+
     const authUserSession = await auth();
-    if (!authUserSession) throw new Error('unauthorized')
+
+    if(!authUserSession) return
+
+    console.log(authUserSession);
+    
 
 
-    const user =  await prismaClient.user.findUnique({
+    const user = await prismaClient.user.findUnique({
       where: {
-        id:authUserSession.user?.id,
-        //@ts-ignore
-        tenantId:authUserSession.user?.tenant.id
+        email:authUserSession?.user?.email as string
       },
       include:{
         tenant:true
       }
-    
     })
+  
 
     return user;
   
