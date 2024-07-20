@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthenticationWrapper from "@/lib/wrappers/auth-wrapper";
 import Providers from "@/components/providers/progress-provider";
-import { getUserSession } from "@/lib/auth";
+import { ClerkProvider } from "@clerk/nextjs";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,24 +20,21 @@ export default async function RootLayout({
 }>) 
 {
 
-
-
-  const user = await getUserSession();
-
-  console.log(user);
   
   
 
   return (
-
+<ClerkProvider>
     <html lang="en" className=" bg-[rgb(25,25,25)]">      
       <body className={inter.className}>
-        <AuthenticationWrapper >
-          <Providers>
-              {children}
-          </Providers>
-        </AuthenticationWrapper>
+        
+          <AuthenticationWrapper >
+            <Providers>
+                {children}
+            </Providers>
+          </AuthenticationWrapper>
       </body>
     </html>
+  </ClerkProvider>
   );
 }
