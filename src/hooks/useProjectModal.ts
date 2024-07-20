@@ -13,4 +13,4 @@ const useProjectModal = create<ProjectModal>((set) => ({
   onClose:() => set({isOpen:false})
 }))
 
-export default useProjectModal
+export default useProjectModal;
