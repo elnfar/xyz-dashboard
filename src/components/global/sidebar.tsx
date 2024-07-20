@@ -11,8 +11,8 @@ import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import Image from "next/image";
 import { SidebarToggle } from "./sidebar-toggle";
 import { Session } from "next-auth";
-import { SignOut } from "../sign-out";
-import { SignIn } from "../sign-in";
+
+
 import { Activity, Idle, User } from "@prisma/client";
 
 

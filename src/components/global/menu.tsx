@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/tooltip";
 import { Idle, Tenant, User } from "@prisma/client";
 import { UserAvatar } from "./Avatar";
-import { signOut } from "@/auth/helper";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -121,7 +120,7 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
                       </Link>
                     )}
                     <Button
-                      onClick={() => signOut()}
+                      // onClick={() => signOut()}
                       variant="outline"
                       className="w-full justify-center h-10 mt-5"
                     >
