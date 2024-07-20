@@ -13,5 +13,5 @@ export default async function page() {
   // } 
 
 
-  return <></>
+  return <div>Page</div>
 }

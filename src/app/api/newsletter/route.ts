@@ -14,8 +14,6 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
   const user = await auth()
 
-  console.log(user);
-  
 
   try {
 

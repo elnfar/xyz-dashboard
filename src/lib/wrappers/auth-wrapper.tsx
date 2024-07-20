@@ -17,6 +17,8 @@ export default function AuthenticationWrapper({ children, user }: {
     const pathname = usePathname();
     const [isLoading, setIsLoading] = useState(true);
 
+    
+
     useEffect(() => {
         if (user) {
             if (user.isOnboarded) {
