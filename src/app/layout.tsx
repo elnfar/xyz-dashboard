@@ -22,24 +22,14 @@ export default async function RootLayout({
 }>) 
 {
 
-  const session = await auth();
-  const user = await getUser();
-
-  if(!user) return
-  
-  
 
   return (
-  <SessionProvider session={session}>
+  
       <html lang="en" className=" bg-[rgb(25,25,25)]">      
         <body className={inter.className}>
-        <AuthenticationWrapper user={user}>      
-              <Providers>
-                  {children}
-              </Providers>
-            </AuthenticationWrapper>      
+            {children}
         </body>
       </html>
-    </SessionProvider>
+    
   );
 }

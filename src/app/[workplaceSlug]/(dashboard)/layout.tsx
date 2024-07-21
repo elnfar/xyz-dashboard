@@ -6,6 +6,10 @@ import { CardWithForm } from "./projects/_components/dialog";
 import { getUser } from "@/lib/user";
 import { prismaClient } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
+import AuthenticationWrapper from "@/lib/wrappers/auth-wrapper";
+import Providers from "@/components/providers/progress-provider";
+import { EPageTypes } from "@/lib/utils";
 
 
 
@@ -43,6 +47,7 @@ export default async function DashboardLayout({children, params}:{
  })
  const user = await getUser();
 
+
  
  const projects = await prismaClient.project.findMany({
   where: {
@@ -67,14 +72,21 @@ export default async function DashboardLayout({children, params}:{
             projects={projects}
             body={<CardWithForm/>}
             />
-            {children}
+
+    <AuthenticationWrapper user={user} prop={{pageType:EPageTypes.AUTHENTICATED}}>
+          <SessionProvider session={session}>
+              <Providers>
+                  {children}
+              </Providers>
+          </SessionProvider>
+      </AuthenticationWrapper>
           </div>
       </div>
     </div>
   )
   }
 
-//   const { workplaceSlug } = params
+//   const { workplaceSlug } = params 
 //   const user = await getUserSession();
 
 
