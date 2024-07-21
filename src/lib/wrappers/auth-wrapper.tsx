@@ -3,20 +3,37 @@
 import { ReactNode, useEffect, useState } from 'react'
 import { Tenant, User } from '@prisma/client';
 import { usePathname, useRouter } from 'next/navigation';
+import { Session } from 'next-auth';
 
 type NewUser = {
     tenant: Tenant
 } & User | null
 
-export default function AuthenticationWrapper({ children }: {
+export default function AuthenticationWrapper({ children,user }: {
     children: ReactNode,
+    user: User & {
+        tenant:Tenant
+    }
 }) {
-
-    const router = useRouter();
+    const router = useRouter()
     const pathname = usePathname();
-    const [isLoading, setIsLoading] = useState(true);
 
 
+    useEffect(() => {
+        if(!user) router.replace('/');
+
+        if(user && pathname === '/') {
+            router.replace('/dashboard');
+        }
+
+        if(user && user.isOnboarded === true){
+            router.replace(`/${user.tenant.name}/dashboard`)
+        }
+        if(user && user.isOnboarded === false) {
+            router.replace(`/onboarding`)
+        }
+    },[])
+    
 
     // useEffect(() => {
     //     if (user) {

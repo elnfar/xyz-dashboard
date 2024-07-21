@@ -49,7 +49,7 @@ model Tenant {
 }
 
 model User {
-  id            String   @id @default(uuid())
+  id            String   @id @default(uuid()) @unique
   name          String?
   email         String   @unique
   emailVerified DateTime?
@@ -157,7 +157,7 @@ model Project {
   tenant     Tenant     @relation(fields: [tenantId], references: [id])
   issues      Issue[]
 }
-model Issue {x
+model Issue {
   id          String        @id @default(uuid())
   title       String
   description String?

@@ -1,50 +1,61 @@
-// import { CustomKanban } from '@/components/global/dnd';
-// import { prismaClient as prisma } from '@/lib/prisma'
-// import { auth } from '@/auth';
-// import Modal from '@/components/global/modal';
-// import { IssueDialog } from '../_components/create-issue-dialog';
-// import { singleProject } from '@/app/_actions/getProjects';
-// import { getTeamMembers } from '@/app/_actions/getTeamMembers';
-// import { getIssues } from '@/app/_actions/getIssues';
+
+import { prismaClient as prisma } from '@/lib/prisma'
+import { auth } from '@/auth';
+import Modal from '@/components/global/modal';
+import { IssueDialog } from '../_components/create-issue-dialog';
+import { CustomKanban } from '@/components/global/dnd';
+import { getUser } from '@/lib/user';
+
+
+export default async function page({params}:{
+    params: {
+        id:string
+    }
+}) {
 
 
 
-// export default async function page({params}:{
-//     params: {
-//         id:string
-//     }
-// }) {
+  const user = await getUser();
 
 
-//     const issues = await getIssues(params); 
+    const singleProject = await prisma.project.findUnique({
+      where: {
+        id:params.id
+      }
+    })
 
-//     const project = await singleProject(params);
-//     if(!project) {
-//       return "No project found"
-//     }
+  const users = await prisma.user.findMany({
+    where: {
+      tenantId:user?.tenant.id
+    }
+  })
 
-//     const users = await getTeamMembers();
-
-
-//   return (
-//     <div className=''>
-//         {/* <ProjectNavbar issues={issues} projectId={projects.id}/> */}
-//           <Modal
-//           title='Add issue'
-//           disabled
-//           projects={project}
-//           body={<IssueDialog projectId={project.id} users={users || []}/>}
-//           />
-//         <CustomKanban issues={issues} projectId={params.id} users={users} projects={project}/>
-//     </div>
-//   )
-// }
+    const issues = await prisma.issue.findMany({
+      where: {
+        tenantId:user?.tenant.id, 
+        projectId:singleProject?.id
+      }
+    })
 
 
-import React from 'react'
+    if(!singleProject) {
+      return "No project found"
+    }
 
-export default function Projects() {
+    
+
+  
+
   return (
-    <div>page</div>
+    <div className=''>
+        {/* <ProjectNavbar issues={issues} projectId={projects.id}/> */}
+          <Modal
+          title='Add issue'
+          disabled
+          projects={singleProject}
+          body={<IssueDialog projectId={singleProject.id} users={users || []}/>}
+          />
+        <CustomKanban issues={issues} projectId={params.id} users={users} projects={singleProject}/>
+    </div>
   )
 }

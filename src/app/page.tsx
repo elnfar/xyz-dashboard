@@ -1,7 +1,18 @@
+import GoogleSignInButton from "@/components/sign-in";
+import { getUser } from "@/lib/user";
 
-export default function page() {
+export default async function page() {
+
+  const user = await getUser();
+
+  if(user) return
+
   return (
-    <div>page</div>
+    <div className="flex items-center justify-center h-screen">
+      <div className="">
+          <GoogleSignInButton/>
+      </div>
+    </div>
   )
 }
 

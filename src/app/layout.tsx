@@ -4,6 +4,8 @@ import "./globals.css";
 import AuthenticationWrapper from "@/lib/wrappers/auth-wrapper";
 import Providers from "@/components/providers/progress-provider";
 import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
+import { getUser } from "@/lib/user";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,21 +22,24 @@ export default async function RootLayout({
 }>) 
 {
 
+  const session = await auth();
+  const user = await getUser();
+
+  if(!user) return
   
   
 
   return (
-  <SessionProvider>
-    <html lang="en" className=" bg-[rgb(25,25,25)]">      
-      <body className={inter.className}>
-        
-          <AuthenticationWrapper >
-            <Providers>
-                {children}
-            </Providers>
-          </AuthenticationWrapper>
-      </body>
-    </html>
+  <SessionProvider session={session}>
+      <html lang="en" className=" bg-[rgb(25,25,25)]">      
+        <body className={inter.className}>
+        <AuthenticationWrapper user={user}>      
+              <Providers>
+                  {children}
+              </Providers>
+            </AuthenticationWrapper>      
+        </body>
+      </html>
     </SessionProvider>
   );
 }

@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaClient } from '@prisma/client';
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -25,6 +25,18 @@ export const {
     }),
   ],
   callbacks: {
+    authorized({auth,request:{nextUrl}}) {
+      const isLoggedIn = !!auth?.user;
+      const isOnlogin = nextUrl.pathname.startsWith('/');
+
+      if(isOnlogin) {
+        if(isLoggedIn) return true;
+        return false;
+      }else if (isLoggedIn) {
+        return Response.redirect(new URL('/onboarding', nextUrl));
+      }
+      return true;
+    },
     async  signIn({account,profile}) {
       if (!profile?.email) {
         throw new Error('No profile')
@@ -78,6 +90,9 @@ export const {
       }
       return token
     },
+  },
+  pages: {
+    signIn:'/'
   },
 })
 
