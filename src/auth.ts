@@ -45,7 +45,7 @@ export const {
       const inviteKey = cookies().get('invite_key')?.value
       await prisma.user.upsert({
         where: {
-          email: profile.email
+          email:profile.email,
         },
         create: {
           email: profile.email,
@@ -54,7 +54,7 @@ export const {
           tenant: inviteKey
           ? {
               connect: {
-                inviteKey
+                inviteKey:inviteKey
               }
             }
           : {
