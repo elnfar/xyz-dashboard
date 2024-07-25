@@ -1,26 +1,34 @@
 
-import Modal from "@/components/global/modal";
 import { Sidebar } from "@/components/global/sidebar";
 import { ReactNode } from "react";
-import { CardWithForm } from "./projects/_components/dialog";
-import { getUser } from "@/lib/user";
 import { prismaClient } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import AuthenticationWrapper from "@/lib/wrappers/auth-wrapper";
 import Providers from "@/components/providers/progress-provider";
 import { EPageTypes } from "@/lib/utils";
+import { getSessionUser } from "@/app/_actions/user";
+import dynamic from "next/dynamic";
+import { getProjects } from "@/app/_actions/getProjects";
 
 
+const Modal = dynamic(() => import('@/components/global/modal'), {
+  ssr: false,
+});
+
+const CardWithForm = dynamic(() => import('@/components/global/CardWithForm').then(mod => mod.CardWithForm), {
+  ssr: false,
+});
 
 export async function generateMetadata({ params }:{
   params:string
 }) {
 
-  const user = await getUser();
+  const user = await getSessionUser();
+
 
   return {
-    title: `${user?.tenant.name} - Home`, 
+    title: `${user?.tenant.name} - ${params}`, 
   }
 }
 
@@ -31,65 +39,8 @@ export default async function DashboardLayout({children, params}:{
 
   const { workplaceSlug } = params
 
-
-
-
-  const session = await auth();
-
-  const userIdleActivity = await prismaClient.activity.findFirst({
-    where: {
-      userId: session?.user?.id,
-      endTime: null,
-    },
-    select:{
-      idle:true
-    }
- })
- const user = await getUser();
-
-
- 
- const projects = await prismaClient.project.findMany({
-  where: {
-    //@ts-ignore
-    tenantId:user?.tenant.id
-  }
- })
- 
-
- 
-  return (
-    <div className=' bg-[rgb(25,25,25)]'>
-      <div className='flex justify-between'>
-        <div className='overflow-y-scroll h-screen w-24'>
-          <Sidebar user={user!} workplaceSlug={workplaceSlug} idle={userIdleActivity?.idle!}/>
-        </div>
-        
-          <div className='h-screen w-full px-4'>
-            <Modal
-            title='New project'
-            disabled
-            projects={projects}
-            body={<CardWithForm/>}
-            />
-
-    <AuthenticationWrapper user={user} prop={{pageType:EPageTypes.AUTHENTICATED}}>
-          <SessionProvider session={session}>
-              <Providers>
-                  {children}
-              </Providers>
-          </SessionProvider>
-      </AuthenticationWrapper>
-          </div>
-      </div>
-    </div>
-  )
-  }
-
-//   const { workplaceSlug } = params 
-//   const user = await getUserSession();
-
-
+  const user = await getSessionUser();
+  const projects = await getProjects()
 
 //   const userIdleActivity = await prismaClient.activity.findFirst({
 //     where: {
@@ -101,42 +52,30 @@ export default async function DashboardLayout({children, params}:{
 //     }
 //  })
 
-//  const projects = await prismaClient.project.findMany({
-//   where: {
-//     //@ts-ignore
-//     tenantId:user?.tenant.id
-//   }
-//  })
-
-
-
-//     //  if(user?.isOnboarded === true) {
-//     //     redirect(`/${user.tenant.name}/dashboard`);
-//     // }
-
-
  
 
-
-//   return (
-//     <div className=' bg-[rgb(25,25,25)]'>
-//       <div className='flex justify-between'>
-//         <div className='overflow-y-scroll h-screen w-24'>
-//           <Sidebar workplaceSlug={workplaceSlug} user={user!} idle={userIdleActivity?.idle!}/>
-//         </div>
+ 
+  return (
+    <AuthenticationWrapper user={user} prop={{pageType:EPageTypes.AUTHENTICATED}}>
+    <div className=' bg-[rgb(25,25,25)]'>
+      <div className='flex justify-between'>
+        <div className='overflow-y-scroll h-screen w-24'>
+          <Sidebar user={user!} workplaceSlug={workplaceSlug}/>
+        </div>
         
-//           <div className='h-screen w-full px-4'>
-//             <Modal
-//             title='New project'
-//             disabled
-//             projects={projects}
-//             body={<CardWithForm/>}
-//             />
-//             {children}
-//           </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-
+          <div className='h-screen w-full px-4'>
+            <Modal
+            title='New project'
+            disabled
+            projects={projects}
+            body={<CardWithForm/>}
+            />
+              <Providers>
+                  {children}
+              </Providers>
+          </div>
+      </div>
+    </div>
+    </AuthenticationWrapper>
+  )
+  }

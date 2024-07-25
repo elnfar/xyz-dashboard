@@ -1,23 +1,25 @@
 'use server'
-import { auth, currentUser } from "@clerk/nextjs/server"
+import { auth } from "@/auth";
+import { prismaClient } from "@/lib/prisma";
 import { PrismaClient } from "@prisma/client"
+import { cache } from "react";
 
 const client = new PrismaClient();
 
-export const getSessionUser = async () => {
+export const getSessionUser = cache(async () => {
 
 
-    try
-     {
+    const session = await auth();
 
-    
-    const user = await currentUser()
 
-    if(!user) {
-        return
-    }
-}catch(err) {
-    return err
-}
+    const user = await prismaClient.user.findUnique({
+        where:{
+            email:session?.user?.email || ''
+        },
+        include: {
+            tenant:true
+        }
+    })
 
-  }
+    return user;
+})

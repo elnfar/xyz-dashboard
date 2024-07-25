@@ -4,7 +4,8 @@ import { auth } from '@/auth';
 import Modal from '@/components/global/modal';
 import { IssueDialog } from '../_components/create-issue-dialog';
 import { CustomKanban } from '@/components/global/dnd';
-import { getUser } from '@/lib/user';
+import { getSessionUser } from '@/app/_actions/user';
+
 
 
 export default async function page({params}:{
@@ -13,9 +14,7 @@ export default async function page({params}:{
     }
 }) {
 
-
-
-  const user = await getUser();
+  const user = await getSessionUser();
 
 
     const singleProject = await prisma.project.findUnique({

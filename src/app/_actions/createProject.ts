@@ -2,16 +2,14 @@
 
 import { prismaClient } from "@/lib/prisma";
 import { ProjectSchema } from "@/lib/project.type";
-import { getUser } from "@/lib/user";
+import { getSessionUser } from "./user";
 
 
 
 
-
- 
 
 export default async function createProject(data:FormData) {
-    const user = await getUser();
+    const user = await getSessionUser();
 
 
     const validatedFields = ProjectSchema.safeParse({

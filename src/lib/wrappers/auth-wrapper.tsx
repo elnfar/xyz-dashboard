@@ -14,12 +14,12 @@ type NewUser = {
 export default function AuthenticationWrapper({ children,user,prop }: {
     children: ReactNode,
     prop: { pageType: EPageTypes },
-    user: User & {
+    user?: User & {
         tenant:Tenant
     } | null
 }) {
 
-    const { pageType = EPageTypes.AUTHENTICATED } = prop
+    const { pageType } = prop
 
     
     const router = useRouter()
@@ -54,6 +54,9 @@ const isValidURL = (url: string): boolean => {
       };
 
 
+      console.log(user);
+      
+
       if (pageType === EPageTypes.NON_AUTHENTICATED) {
         if (!user?.id) return <>{children}</>;
         else {
@@ -61,7 +64,7 @@ const isValidURL = (url: string): boolean => {
             const currentRedirectRoute = getWorkspaceRedirectionUrl();
             router.push(currentRedirectRoute);
             return <></>;
-          } else {
+          } else  {
             router.push("/onboarding");
             return <></>;
           }
@@ -69,14 +72,13 @@ const isValidURL = (url: string): boolean => {
       }
 
       if (pageType === EPageTypes.AUTHENTICATED) {
-        
-        
         if (user?.id) {
-          if (user && user?.id && user.isOnboarded) return <>{children}</>;
-          else {
+          if (user && user.isOnboarded) return <>{children}</>;
+          if(user.isOnboarded === false) {
             router.push(`/onboarding`);
             return <></>;
-          }
+          } 
+
         } else {
           router.push(`/${pathname ? `?next_path=${pathname}` : ``}`);
           return <></>;

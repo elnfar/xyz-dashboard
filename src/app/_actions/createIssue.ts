@@ -2,9 +2,9 @@
 
 import { auth } from "@/auth";
 import { prismaClient } from "@/lib/prisma";
-import { getUser } from "@/lib/user";
 import { IssueCategory } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { getSessionUser } from "./user";
 
 type Cateogry = {
     NEW:'NEW',
@@ -16,7 +16,7 @@ type Cateogry = {
 export default async function createIssue(data:FormData) {
 
 
-    const user = await getUser();
+    const user = await getSessionUser();
 
     if(!user) return "User must be exist to create an issue";
 
@@ -44,7 +44,7 @@ export default async function createIssue(data:FormData) {
             },
 
             //@ts-ignore
-            tenantId: user.tenant.id
+            tenantId: user.tenantId
         }
     })
 

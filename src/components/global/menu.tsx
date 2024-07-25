@@ -19,14 +19,11 @@ import { UserAvatar } from "./Avatar";
 
 interface MenuProps {
   isOpen: boolean | undefined;
-  idle: Idle;
   user: User ;
   workplaceSlug: string;
 }
 
 export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
-  const pathname = usePathname();
-
   const menuList = getMenuList();
 
   return (

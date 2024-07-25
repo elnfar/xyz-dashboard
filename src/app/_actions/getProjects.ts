@@ -1,19 +1,20 @@
 'use server';
 
 import { prismaClient } from "@/lib/prisma";
-import { getUser } from "@/lib/user";
+import { getSessionUser } from "./user";
+import { cache } from "react";
 
 
 
-export const getProjects = async() => {
-    const user = await getUser();
+export const getProjects = cache(async() => {
+    const user = await getSessionUser();
     const projects = await prismaClient.project.findMany({
         where: {
-            tenantId:user?.tenant.id
+            tenantId:user?.tenantId
         },
         include: {
             tenant:true
         }
     })
     return projects;
-}
+})

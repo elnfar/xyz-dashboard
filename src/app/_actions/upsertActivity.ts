@@ -4,22 +4,23 @@ import { auth } from "@/auth";
 import { prismaClient } from "@/lib/prisma";
 import { Idle } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { getSessionUser } from "./user";
 
 
 export async function upsertActivity(data:FormData) {
-    'use server'
-    const user = await auth();
+    
+    const user = await getSessionUser();
     const newIdle = data.get('activity') as Idle;
 
       // @ts-ignore
-      if (!user?.user?.id || !user?.user?.tenant?.id) {
+      if (!user) {
         throw new Error('User or tenant information is missing');
       }
   
     
     await prismaClient.activity.updateMany({
       where: {
-        userId: user.user.id,
+        userId: user.id,
         endTime: null,
       },
       data: {
@@ -29,7 +30,7 @@ export async function upsertActivity(data:FormData) {
 
     await prismaClient.activity.create({
       data: {
-        userId: user.user.id,
+        userId: user.id,
         // @ts-ignore
         tenantId: user.user.tenant.id,
         idle: newIdle,

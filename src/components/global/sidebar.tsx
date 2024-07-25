@@ -1,8 +1,6 @@
 "use client"
 
 import Link from "next/link";
-import { PanelsTopLeft, SidebarClose } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { useStore } from "zustand";
 import { Button } from "@/components/ui/button";
@@ -10,31 +8,21 @@ import { Menu } from "@/components/global/menu";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import Image from "next/image";
 import { SidebarToggle } from "./sidebar-toggle";
-import { Session } from "next-auth";
 
 
-import { Activity, Idle, User } from "@prisma/client";
+import { Idle, User } from "@prisma/client";
 
 
 type IdleType = {
   idle:Idle
 }
 
-export function Sidebar({user, idle,workplaceSlug}:{
+export function Sidebar({user,workplaceSlug}:{
   user:User,
-  idle: Idle,
   workplaceSlug:string
 }) {
 
-
-
-  // {/* 
-  const sidebar = useStore(useSidebarToggle, (state) => state);
-
-  if(workplaceSlug) {
-    
-  }
-  
+  const sidebar = useStore(useSidebarToggle, (state) => state);  
   if(!sidebar) return null;
 
   return (
@@ -68,10 +56,7 @@ export function Sidebar({user, idle,workplaceSlug}:{
             </h1>
           </Link>
         </Button>
-        {/* <div className="w-24 h-24 bg-slate-300 p-4 rounded-full">
-        </div>  */}
-        {/* {!session ? <SignIn/> : <SignOut/>}  */}
-        <Menu workplaceSlug={workplaceSlug} isOpen={sidebar?.isOpen} idle={idle} user={user}/>
+        <Menu workplaceSlug={workplaceSlug} isOpen={sidebar?.isOpen} user={user}/>
       </div>
     </aside>
   );

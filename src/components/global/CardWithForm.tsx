@@ -3,7 +3,6 @@
 import createProject from "@/app/_actions/createProject"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import useProjectModal from "@/hooks/useProjectModal"
 
 import {
   Card,
@@ -22,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useRouter } from "next/navigation";
 
 
 
