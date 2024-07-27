@@ -53,37 +53,62 @@ const isValidURL = (url: string): boolean => {
         return redirectionRoute;
       };
 
-
-      console.log(user);
       
+      useEffect(() => {
+        if (pageType === EPageTypes.NON_AUTHENTICATED) {
+            if (!user?.id) return;
+            if (user?.id && user.isOnboarded) {
+                const currentRedirectRoute = getWorkspaceRedirectionUrl();
+                router.push(currentRedirectRoute);
+            } else if (user?.id && !user.isOnboarded) {
+                router.push("/onboarding");
+            }
+        } else if (pageType === EPageTypes.AUTHENTICATED) {
+            if (user?.id) {
+                if (user.isOnboarded) return;
+                router.push(`/onboarding`);
+            } else {
+                router.push(`/${pathname ? `?next_path=${pathname}` : ``}`);
+            }
+        }
+    }, [pageType, user, router, pathname, nextPath]);
 
-      if (pageType === EPageTypes.NON_AUTHENTICATED) {
+    // Conditional rendering to avoid navigating while rendering
+    if (pageType === EPageTypes.NON_AUTHENTICATED) {
         if (!user?.id) return <>{children}</>;
-        else {
-          if (user?.id && user.isOnboarded) {
-            const currentRedirectRoute = getWorkspaceRedirectionUrl();
-            router.push(currentRedirectRoute);
-            return <></>;
-          } else  {
-            router.push("/onboarding");
-            return <></>;
-          }
-        }
-      }
+    }
 
-      if (pageType === EPageTypes.AUTHENTICATED) {
-        if (user?.id) {
-          if (user && user.isOnboarded) return <>{children}</>;
-          if(user.isOnboarded === false) {
-            router.push(`/onboarding`);
-            return <></>;
-          } 
+    if (pageType === EPageTypes.AUTHENTICATED) {
+        if (user?.id && user.isOnboarded) return <>{children}</>;
+    }
 
-        } else {
-          router.push(`/${pathname ? `?next_path=${pathname}` : ``}`);
-          return <></>;
-        }
-      }
+    return null;
 
-    return <>{children}</>
+    //   if (pageType === EPageTypes.NON_AUTHENTICATED) {
+    //     if (!user?.id) return <>{children}</>;
+    //     else {
+    //       if (user?.id && user.isOnboarded) {
+    //         const currentRedirectRoute = getWorkspaceRedirectionUrl();
+    //         router.push(currentRedirectRoute);
+    //         return <></>;
+    //       } else if(user.id && !user.isOnboarded)  {
+    //         router.push("/onboarding");
+    //         return <></>;
+    //       }
+    //     }
+    //   }
+
+    //   if (pageType === EPageTypes.AUTHENTICATED) {
+    //     if (user?.id) {
+    //       if (user && user.isOnboarded) return <>{children}</>;
+    //         router.push(`/onboarding`);
+    //         return <></>;
+
+    //     } else {
+    //       router.push(`/${pathname ? `?next_path=${pathname}` : ``}`);
+    //       return <></>;
+    //     }
+    //   }
+
+    // return <>{children}</>
 }

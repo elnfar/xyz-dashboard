@@ -1,98 +1,101 @@
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { PrismaClient } from '@prisma/client';
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { cookies } from "next/headers";
+  import NextAuth from "next-auth";
+  import GoogleProvider from "next-auth/providers/google";
+  import { PrismaAdapter } from "@auth/prisma-adapter";
+  import { cookies } from "next/headers";
+import { prismaClient } from "./lib/prisma";
 
-const prisma = new PrismaClient();
 
-export const {
-  handlers: { GET, POST },
-  signIn,
-  signOut,
-  auth,
-} = NextAuth({
-  adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "jwt",
-  },
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: { params: { access_type: "offline", prompt: "consent" } },
-      allowDangerousEmailAccountLinking:true
-    }),
-  ],
-  callbacks: {
-    authorized({auth,request:{nextUrl}}) {
-      const isLoggedIn = !!auth?.user;
-      const isOnlogin = nextUrl.pathname.startsWith('/');
-
-      if(isOnlogin) {
-        if(isLoggedIn) return true;
-        return false;
-      }else if (isLoggedIn) {
-        return Response.redirect(new URL('/onboarding', nextUrl));
-      }
-      return true;
+  export const {
+    handlers: { GET, POST },
+    signIn,
+    signOut,
+    auth,
+  } = NextAuth({
+    adapter: PrismaAdapter(prismaClient),
+    session: {
+      strategy: "jwt",
     },
-    async  signIn({account,profile}) {
-      if (!profile?.email) {
-        throw new Error('No profile')
-      }
+    providers: [
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        authorization: { params: { access_type: "offline", prompt: "consent" } },
+        allowDangerousEmailAccountLinking:true
+      }),
+    ],
+    callbacks: {
+      authorized({auth}) {
+        const isLoggedIn = !!auth?.user;
+        if(!isLoggedIn) return false
 
-      const inviteKey = cookies().get('invite_key')?.value
-      await prisma.user.upsert({
-        where: {
-          email:profile.email,
-        },
-        create: {
-          email: profile.email,
-          name: profile.name,
-          role: inviteKey ? 'USER' : 'OWNER',
-          tenant: inviteKey
-          ? {
-              connect: {
-                inviteKey:inviteKey
-              }
-            }
-          : {
-              create: {}
-            }
-
-        // },
-        
+        return true;
       },
-      update: {
-        name: profile.name,
-      }
-      })
-      cookies().delete('invite_key')
-      return true
+      async  signIn({account,profile}) {
+        if (!profile?.email) {
+          console.log("ERROR HAPPENED HERE");
+          
+          throw new Error('No profile')
+        }
 
-    },
-    async jwt({ token, user, account, profile }) {
-      console.log({ token, account, profile, user })
-      if (profile) {
-        const user = await prisma.user.findUnique({
+        console.log(profile.email);
+        
+
+        const inviteKey = cookies().get('invite_key')?.value
+        await prismaClient.user.upsert({
           where: {
-            email: profile.email || ''
-          }
+            email:profile.email,
+          },
+          create: {
+            email: profile.email,
+            name: profile.name,
+            role: inviteKey ? 'USER' : 'OWNER',
+            tenant: inviteKey
+            ? {
+                connect: {
+                  inviteKey,
+                }
+              }
+            : {
+                create: {}
+              }          
+        },
+
+        
+        update: {
+          name: profile.name,
+        }
         })
-        if (!user) {
-          throw new Error('No user found')
+        console.log("FINALIZED");
+        
+        cookies().delete('invite_key')
+        return true
+
+      },
+      async jwt({ token, user, account, profile }) {
+        console.log({ token, account, profile, user })
+
+
+        if (profile) {
+          const user = await prismaClient.user.findUnique({
+            where: {
+              email:profile.email || ''
+            }
+          })
+          if (!user) {
+            throw new Error('No user found')
+          }
+          token.id = user.id
+          token.tenant = {
+            id: user.tenantId
+          }
         }
-        token.id = user.id
-        token.tenant = {
-          id: user.tenantId
-        }
-      }
-      return token
+        return token
+      },
     },
-  },
-  pages: {
-    signIn:'/'
-  },
-})
+    pages: {
+      signIn:'/'
+    },
+    secret: process.env.NEXTAUTH_SECRET || '+ARomkQ0SCb6a4YALJZ0hjxnXG680oenSua0EXMVqDg=',
+    debug:true
+  })
 

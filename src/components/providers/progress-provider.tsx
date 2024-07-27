@@ -13,7 +13,8 @@ const Providers = ({ children }:{
         height="4px"
         color="#fffd00"
         options={{ showSpinner: false }}
-        shallowRouting
+        shallowRouting={true}
+        disableSameURL={true}
       />
     </>
   );

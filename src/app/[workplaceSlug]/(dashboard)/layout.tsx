@@ -57,6 +57,7 @@ export default async function DashboardLayout({children, params}:{
  
   return (
     <AuthenticationWrapper user={user} prop={{pageType:EPageTypes.AUTHENTICATED}}>
+      
     <div className=' bg-[rgb(25,25,25)]'>
       <div className='flex justify-between'>
         <div className='overflow-y-scroll h-screen w-24'>
@@ -70,12 +71,12 @@ export default async function DashboardLayout({children, params}:{
             projects={projects}
             body={<CardWithForm/>}
             />
-              <Providers>
+              
                   {children}
-              </Providers>
           </div>
       </div>
     </div>
+   
     </AuthenticationWrapper>
   )
   }

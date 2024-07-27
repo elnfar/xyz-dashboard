@@ -17,7 +17,6 @@ export default async function createProject(data:FormData) {
       industry:data.get('industry') as string
     })
 
-    console.log(validatedFields);
     
 
     if(!validatedFields.success) {
@@ -34,9 +33,7 @@ export default async function createProject(data:FormData) {
         data: {
           name:validatedFields.data.name,
           industry:validatedFields.data.industry,
-          tenant:{
-            connect:user?.tenant
-          }
+          tenantId:user?.tenantId!
         }
       })  
 }
