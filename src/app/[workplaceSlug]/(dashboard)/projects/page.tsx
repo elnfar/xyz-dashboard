@@ -25,10 +25,22 @@ export default async function page() {
 
   return (
     <div>
-      <div className='py-10'>
-      <ButtonClient title='create'/>
+      <ProjectNavbar/>
+      <div className='py-10 grid lg:grid-cols-3 md:grid-cols-2 gap-4'>
         {projects.map((project) => <ProjectSingle key={project.id} project={project}/>)}
       </div>
     </div>
+  )
+}
+
+
+
+function ProjectNavbar() {
+  return (
+    <nav className='py-4 w-full'>
+      <div className=''>
+        <ButtonClient title='create'/>
+      </div>
+    </nav>
   )
 }

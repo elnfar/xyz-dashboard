@@ -13,7 +13,7 @@ export const getProjects = cache(async() => {
             tenantId:user?.tenantId
         },
         include: {
-            tenant:true
+            tenant:true,
         }
     })
     return projects;
