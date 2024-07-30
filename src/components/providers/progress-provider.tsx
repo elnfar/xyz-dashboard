@@ -14,7 +14,7 @@ const Providers = ({ children }:{
         color="#fffd00"
         options={{ showSpinner: false }}
         shallowRouting={true}
-        disableSameURL={true}
+        disableAnchorClick
       />
     </>
   );

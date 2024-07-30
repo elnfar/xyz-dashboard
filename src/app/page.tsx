@@ -1,15 +1,15 @@
 import { SignInPage } from "@/components/sign-in";
 import { checkIsAuthenticated } from "@/lib/checkIsAuthenticated";
-import { EPageTypes } from "@/lib/utils";
-import AuthenticationWrapper from "@/lib/wrappers/auth-wrapper";
 import { redirect } from "next/navigation";
+import { getSessionUser } from "./_actions/user";
 
 export default async function page() {
 
   const isAuthenticated = await checkIsAuthenticated();
+  const user  = await getSessionUser();
 
   if (isAuthenticated) {
-    redirect("/zzz");
+    redirect(`/${user?.tenant.name}`);
   } else {
     return <LoginPage/>;
   }

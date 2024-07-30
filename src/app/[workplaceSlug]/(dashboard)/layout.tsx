@@ -1,20 +1,10 @@
 
 import { Sidebar } from "@/components/global/sidebar";
 import { ReactNode } from "react";
-import { prismaClient } from "@/lib/prisma";
-import { auth } from "@/auth";
-import { SessionProvider } from "next-auth/react";
-import AuthenticationWrapper from "@/lib/wrappers/auth-wrapper";
-import Providers from "@/components/providers/progress-provider";
-import { EPageTypes } from "@/lib/utils";
 import { getSessionUser } from "@/app/_actions/user";
 import dynamic from "next/dynamic";
 import { getProjects } from "@/app/_actions/getProjects";
-import { SWRConfig } from "swr";
-import { Provider } from "@/app/provider";
-import { storesContext } from ".."; 
-import MobXProvider from "../provider";
-
+import Providers from "@/components/providers/progress-provider";
 
 const Modal = dynamic(() => import('@/components/global/modal'), {
   ssr: false,
@@ -32,7 +22,7 @@ export async function generateMetadata({ params }:{
 
 
   return {
-    title: `${user?.tenant.name} - ${params}`, 
+    title: `${user?.tenant.name} - Home`, 
   }
 }
 
@@ -46,23 +36,9 @@ export default async function DashboardLayout({children, params}:{
   const user = await getSessionUser();
   const projects = await getProjects()
 
-//   const userIdleActivity = await prismaClient.activity.findFirst({
-//     where: {
-//       userId: user?.id,
-//       endTime: null,
-//     },
-//     select:{
-//       idle:true
-//     }
-//  })
-
- 
-
  
   return (
-    // <AuthenticationWrapper user={user} prop={{pageType:EPageTypes.AUTHENTICATED}}>  
-  <MobXProvider>
-    <Provider>
+    <Providers>      
       <div className=' bg-[rgb(25,25,25)]'>
         <div className='flex justify-between'>
           <div className='overflow-y-scroll h-screen w-24'>
@@ -79,10 +55,9 @@ export default async function DashboardLayout({children, params}:{
                 
                     {children}
             </div>
+            
         </div>
       </div> 
-     {/* </AuthenticationWrapper> */}
-    </Provider>
-    </MobXProvider>
+      </Providers> 
   )
   }

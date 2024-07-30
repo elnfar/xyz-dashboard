@@ -15,7 +15,7 @@ import {
   TooltipProvider
 } from "@/components/ui/tooltip";
 import { Idle, Tenant, User } from "@prisma/client";
-import { UserAvatar } from "./Avatar";
+import { UserProfile } from "./Avatar";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -109,13 +109,6 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <div className="">
-                    {!!user && (
-                      <Link href={`/${workplaceSlug}/(dashboard)/account`} className="rounded-full w-10 h-10 mx-auto flex items-center justify-center border-2">
-                        <UserAvatar
-                          src={user?.image || ''}
-                        />
-                      </Link>
-                    )}
                     <Button
                       // onClick={() => signOut()}
                       variant="outline"

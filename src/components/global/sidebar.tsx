@@ -11,6 +11,8 @@ import { SidebarToggle } from "./sidebar-toggle";
 
 
 import { Idle, User } from "@prisma/client";
+import { Avatar } from "../ui/avatar";
+import { UserProfile } from "./Avatar";
 
 
 type IdleType = {
@@ -27,13 +29,14 @@ export function Sidebar({user,workplaceSlug}:{
 
   return (
     <aside
+
       className={cn(
         "fixed top-0 left-0 z-[9999999] bg-[rgb(23,23,23)] h-screen -translate-x-full lg:translate-x-0 transition-[width] ease-in-out duration-300",
         sidebar?.isOpen === false ? "w-[90px]" : "w-72"
       )}
     >
-      <SidebarToggle isOpen={sidebar?.isOpen} setIsOpen={sidebar?.setIsOpen} />
-      <div className="relative h-full flex flex-col px-3 py-4 overflow-y-auto shadow-md dark:shadow-zinc-800">
+      {/* <SidebarToggle isOpen={sidebar?.isOpen} setIsOpen={sidebar?.setIsOpen} /> */}
+      <div  onMouseEnter={() => sidebar.setIsOpen?.()} onMouseLeave={() => sidebar.setIsOpen?.()}  className="relative h-full flex flex-col px-3 py-4 overflow-y-auto shadow-md dark:shadow-zinc-800">
         <Button
           className={cn(
             "transition-transform ease-in-out duration-300 mb-1",
@@ -42,8 +45,8 @@ export function Sidebar({user,workplaceSlug}:{
           variant="link"
           asChild
         >
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className={`w-6 h-6 mr-1 ${sidebar.isOpen ? 'hidden' :'block'}`}>S</div>
+          <Link href="/dashboard" className="flex items-center gap-2" >
+            <div className={` ${sidebar.isOpen ? 'hidden' :'block'}`}><UserProfile/></div>
             <h1
               className={cn(
                 "font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",

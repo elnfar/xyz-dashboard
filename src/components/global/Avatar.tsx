@@ -1,13 +1,14 @@
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
-import { Avatar } from "../ui/avatar"
-
-export function UserAvatar({src}: {
-    src:string
-  }) {
-    return (
-      <Avatar className="flex items-center justify-center">
-        <AvatarImage src={src} alt="@shadcn" />
-        <AvatarFallback>AB</AvatarFallback>
-      </Avatar>
-    )
-  }
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+ 
+export function UserProfile({userSrc}:{userSrc?:string}) {
+  return (
+    <Avatar>
+      <AvatarImage src={userSrc || "https://github.com/shadcn.png"} alt="User Profile Picture" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  )
+}
