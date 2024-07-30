@@ -1,8 +1,11 @@
-  import NextAuth from "next-auth";
-  import GoogleProvider from "next-auth/providers/google";
-  import { PrismaAdapter } from "@auth/prisma-adapter";
-  import { cookies } from "next/headers";
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { cookies } from "next/headers";
 import { prismaClient } from "./lib/prisma";
+
+
+
 
 
   export const {
@@ -11,6 +14,7 @@ import { prismaClient } from "./lib/prisma";
     signOut,
     auth,
   } = NextAuth({
+    trustHost: true,
     adapter: PrismaAdapter(prismaClient),
     session: {
       strategy: "jwt",
@@ -22,13 +26,12 @@ import { prismaClient } from "./lib/prisma";
         authorization: { params: { access_type: "offline", prompt: "consent" } },
         allowDangerousEmailAccountLinking:true
       }),
+
     ],
     callbacks: {
-      authorized({auth}) {
-        const isLoggedIn = !!auth?.user;
-        if(!isLoggedIn) return false
-
-        return true;
+      authorized: async ({ auth }) => {
+        // Logged in users are authenticated, otherwise redirect to login page
+        return !!auth
       },
       async  signIn({account,profile}) {
         if (!profile?.email) {
@@ -84,6 +87,7 @@ import { prismaClient } from "./lib/prisma";
           if (!user) {
             throw new Error('No user found')
           }
+       
           token.id = user.id
           token.tenant = {
             id: user.tenantId
@@ -96,6 +100,6 @@ import { prismaClient } from "./lib/prisma";
       signIn:'/'
     },
     secret: process.env.NEXTAUTH_SECRET || '+ARomkQ0SCb6a4YALJZ0hjxnXG680oenSua0EXMVqDg=',
-    debug:true
+    debug:true,
   })
 

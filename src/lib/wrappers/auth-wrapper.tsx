@@ -1,25 +1,20 @@
 'use client';
-
-import { ReactNode, useEffect, useState } from 'react'
-import { Tenant, User } from '@prisma/client';
+import { ReactNode, useEffect} from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { EPageTypes } from '../utils';
+import useSWR from 'swr';
+import { fetcher } from './fetcher';
 
 
-
-type NewUser = {
-    tenant: Tenant
-} & User | null
-
-export default function AuthenticationWrapper({ children,user,prop }: {
+const AuthenticationWrappe = ({ children,pageType }:{
     children: ReactNode,
-    prop: { pageType: EPageTypes },
-    user?: User & {
-        tenant:Tenant
-    } | null
-}) {
+    pageType?:string
+}) => {
 
-    const { pageType } = prop
+
+    pageType = EPageTypes.NON_AUTHENTICATED;
+
+
 
     
     const router = useRouter()
@@ -27,88 +22,107 @@ export default function AuthenticationWrapper({ children,user,prop }: {
     const searchParams = useSearchParams();
     const nextPath = searchParams.get("next_path");
 
-
-const isValidURL = (url: string): boolean => {
-    const disallowedSchemes = /^(https?|ftp):\/\//i;
-    return !disallowedSchemes.test(url);
-  };
-
-    const getWorkspaceRedirectionUrl = (): string => {
-        let redirectionRoute = "/dashboard";
+    let {data,isLoading,error} = useSWR(`/api/user`,fetcher);
+    console.log(data);
     
-        // validating the nextPath from the router query
-        if (nextPath && isValidURL(nextPath.toString())) {
-          redirectionRoute = nextPath.toString();
-          return redirectionRoute;
+
+
+
+      if(pageType === EPageTypes.NON_AUTHENTICATED) {
+        if(!data.user.id) return <>{children}</>
+        if(data.user.id && data.user.isOnboarded) {
+            router.push(`/${data.user.tenant.name}`)
+            return <></>;
+        }else {
+            router.push("/onboarding");
+            return <></>;
         }
-    
-        // validate the last and fallback workspace_slug
-        const currentWorkspaceSlug = user?.tenant.name 
-    
-        // validate the current workspace_slug is available in the user's workspace list
-        const isCurrentWorkspaceValid = user?.tenant.name;
-    
-        if (isCurrentWorkspaceValid) redirectionRoute = `/${currentWorkspaceSlug}`;
-    
-        return redirectionRoute;
-      };
+      }
 
+    
+
+      return <>{children}</>
+    
       
-      useEffect(() => {
-        if (pageType === EPageTypes.NON_AUTHENTICATED) {
-            if (!user?.id) return;
-            if (user?.id && user.isOnboarded) {
-                const currentRedirectRoute = getWorkspaceRedirectionUrl();
-                router.push(currentRedirectRoute);
-            } else if (user?.id && !user.isOnboarded) {
-                router.push("/onboarding");
-            }
-        } else if (pageType === EPageTypes.AUTHENTICATED) {
-            if (user?.id) {
-                if (user.isOnboarded) return;
-                router.push(`/onboarding`);
-            } else {
-                router.push(`/${pathname ? `?next_path=${pathname}` : ``}`);
-            }
-        }
-    }, [pageType, user, router, pathname, nextPath]);
+      
+
+// const isValidURL = (url: string): boolean => {
+//     const disallowedSchemes = /^(https?|ftp):\/\//i;
+//     return !disallowedSchemes.test(url);
+//   };
+
+//     const getWorkspaceRedirectionUrl = (): string => {
+//         let redirectionRoute = "/dashboard";
+    
+//         // validating the nextPath from the router query
+//         if (nextPath && isValidURL(nextPath.toString())) {
+//           redirectionRoute = nextPath.toString();
+//           return redirectionRoute;
+//         }
+    
+//         // validate the last and fallback workspace_slug
+//         const currentWorkspaceSlug = currentUser?.tenant.name 
+    
+//         // validate the current workspace_slug is available in the user's workspace list
+//         const isCurrentWorkspaceValid = currentUser?.tenant.name;
+    
+//         if (isCurrentWorkspaceValid) redirectionRoute = `/${currentWorkspaceSlug}`;
+    
+//         return redirectionRoute;
+//       };
+
+//       console.log(currentUser);
+      
+
+
+//         if (pageType === EPageTypes.NON_AUTHENTICATED) {
+//             if(currentUser) {
+//                 if(currentUser.isOnboarded === false) {
+//                     router.push("/onboarding");
+//                     return <>{children}</>
+//                 }
+//                 if (currentUser.isOnboarded) {
+//                     const currentRedirectRoute = getWorkspaceRedirectionUrl();
+//                     router.push(currentRedirectRoute);
+//                     return <>{children}</>
+//                 } 
+//             }
+//         } else if (pageType === EPageTypes.AUTHENTICATED) {
+//             if (currentUser.id) {
+//                 if (currentUser.isOnboarded) return;
+//                 router.push(`/onboarding`);
+//             } else {
+//                 router.push(`/${pathname ? `?next_path=${pathname}` : ``}`);
+//             }
+//         }
+
+
+    //   useEffect(() => {
+
+    //     if (pageType === EPageTypes.NON_AUTHENTICATED) {
+    //         if (!currentUser?.id) return;
+    //         if (currentUser?.id && currentUser.isOnboarded) {
+    //             const currentRedirectRoute = getWorkspaceRedirectionUrl();
+    //             router.push(currentRedirectRoute);
+    //         } else if (currentUser?.id && !currentUser.isOnboarded) {
+    //             router.push("/onboarding");
+    //         }
+    //     } else if (pageType === EPageTypes.AUTHENTICATED) {
+    //         if (currentUser.id) {
+    //             if (currentUser.isOnboarded) {
+    //                 router.push(`/onboarding`);
+    //             }
+    //         } else {
+    //             router.push(`/${pathname ? `?next_path=${pathname}` : ``}`);
+    //         }
+    //     }
+    //   },[])
+      
+      
 
     // Conditional rendering to avoid navigating while rendering
-    if (pageType === EPageTypes.NON_AUTHENTICATED) {
-        if (!user?.id) return <>{children}</>;
-    }
 
-    if (pageType === EPageTypes.AUTHENTICATED) {
-        if (user?.id && user.isOnboarded) return <>{children}</>;
-    }
-
-    return null;
-
-    //   if (pageType === EPageTypes.NON_AUTHENTICATED) {
-    //     if (!user?.id) return <>{children}</>;
-    //     else {
-    //       if (user?.id && user.isOnboarded) {
-    //         const currentRedirectRoute = getWorkspaceRedirectionUrl();
-    //         router.push(currentRedirectRoute);
-    //         return <></>;
-    //       } else if(user.id && !user.isOnboarded)  {
-    //         router.push("/onboarding");
-    //         return <></>;
-    //       }
-    //     }
-    //   }
-
-    //   if (pageType === EPageTypes.AUTHENTICATED) {
-    //     if (user?.id) {
-    //       if (user && user.isOnboarded) return <>{children}</>;
-    //         router.push(`/onboarding`);
-    //         return <></>;
-
-    //     } else {
-    //       router.push(`/${pathname ? `?next_path=${pathname}` : ``}`);
-    //       return <></>;
-    //     }
-    //   }
-
-    // return <>{children}</>
 }
+
+
+export default AuthenticationWrappe;

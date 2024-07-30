@@ -25,9 +25,7 @@ export default async function RootLayout({
   return (
       <html lang="en" className=" bg-[rgb(25,25,25)]">      
         <body className={inter.className}>
-          <Providers>
             {children}
-          </Providers>
         </body>
       </html>
   );

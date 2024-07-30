@@ -10,6 +10,10 @@ import { EPageTypes } from "@/lib/utils";
 import { getSessionUser } from "@/app/_actions/user";
 import dynamic from "next/dynamic";
 import { getProjects } from "@/app/_actions/getProjects";
+import { SWRConfig } from "swr";
+import { Provider } from "@/app/provider";
+import { storesContext } from ".."; 
+import MobXProvider from "../provider";
 
 
 const Modal = dynamic(() => import('@/components/global/modal'), {
@@ -56,27 +60,29 @@ export default async function DashboardLayout({children, params}:{
 
  
   return (
-    <AuthenticationWrapper user={user} prop={{pageType:EPageTypes.AUTHENTICATED}}>
-      
-    <div className=' bg-[rgb(25,25,25)]'>
-      <div className='flex justify-between'>
-        <div className='overflow-y-scroll h-screen w-24'>
-          <Sidebar user={user!} workplaceSlug={workplaceSlug}/>
-        </div>
-        
-          <div className='h-screen w-full px-4'>
-            <Modal
-            title='New project'
-            disabled
-            projects={projects}
-            body={<CardWithForm/>}
-            />
-              
-                  {children}
+    // <AuthenticationWrapper user={user} prop={{pageType:EPageTypes.AUTHENTICATED}}>  
+  <MobXProvider>
+    <Provider>
+      <div className=' bg-[rgb(25,25,25)]'>
+        <div className='flex justify-between'>
+          <div className='overflow-y-scroll h-screen w-24'>
+            <Sidebar user={user!} workplaceSlug={workplaceSlug}/>
           </div>
-      </div>
-    </div>
-   
-    </AuthenticationWrapper>
+          
+            <div className='h-screen w-full px-4'>
+              <Modal
+              title='New project'
+              disabled
+              projects={projects}
+              body={<CardWithForm/>}
+              />
+                
+                    {children}
+            </div>
+        </div>
+      </div> 
+     {/* </AuthenticationWrapper> */}
+    </Provider>
+    </MobXProvider>
   )
   }

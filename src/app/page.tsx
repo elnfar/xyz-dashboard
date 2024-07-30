@@ -1,22 +1,27 @@
-import GoogleSignInButton from "@/components/sign-in";
+import { SignInPage } from "@/components/sign-in";
+import { checkIsAuthenticated } from "@/lib/checkIsAuthenticated";
 import { EPageTypes } from "@/lib/utils";
 import AuthenticationWrapper from "@/lib/wrappers/auth-wrapper";
-import { getSessionUser } from "./_actions/user";
-
+import { redirect } from "next/navigation";
 
 export default async function page() {
 
-  const user = await getSessionUser();
+  const isAuthenticated = await checkIsAuthenticated();
 
-  return (
-    <AuthenticationWrapper user={user} prop={{pageType: EPageTypes.NON_AUTHENTICATED}}>
-        <div className="flex items-center justify-center h-screen">
-          <div className="">
-              <GoogleSignInButton/>
-          </div>
-        </div>
-      </AuthenticationWrapper>
-  )
+  if (isAuthenticated) {
+    redirect("/zzz");
+  } else {
+    return <LoginPage/>;
+  }
 }
 
+
+function LoginPage() {
+  return (
+
+          <div className="flex items-center justify-center h-screen">
+              <SignInPage/>
+          </div>
+  )
+}
 
