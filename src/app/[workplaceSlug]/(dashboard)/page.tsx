@@ -1,7 +1,3 @@
-import { EPageTypes } from '@/lib/utils'
-import AuthenticationWrapper from '@/lib/wrappers/auth-wrapper'
-import React from 'react'
-
 export default function page() {
 
 
