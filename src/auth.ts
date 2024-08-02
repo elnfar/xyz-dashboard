@@ -48,6 +48,7 @@ import { prismaClient } from "./lib/prisma";
             name: profile.name,
             role: inviteKey ? 'USER' : 'OWNER',
             image:profile.picture,
+            isOnboarded:inviteKey ? true : false,
             tenant: inviteKey
             ? {
                 connect: {
@@ -64,15 +65,11 @@ import { prismaClient } from "./lib/prisma";
           name: profile.name,
         }
         })
-        console.log("FINALIZED");
-        
         cookies().delete('invite_key')
         return true
 
       },
       async jwt({ token, user, account, profile }) {
-        console.log({ token, account, profile, user })
-
 
         if (profile) {
           const user = await prismaClient.user.findUnique({
