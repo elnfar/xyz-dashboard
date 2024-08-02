@@ -61,7 +61,7 @@ export default async function page() {
             <div className="border-2 w-fit px-4 py-2">
               <p className="sm">
                 Invite your team members:{" "}
-                {"https://app.siiz.xyz/" + user?.tenant.inviteKey}
+                {"https://app.siiz.xyz/invite/" + user?.tenant.inviteKey}
               </p>
             </div>
             <Button variant="secondary" className="bg-white text-black">
