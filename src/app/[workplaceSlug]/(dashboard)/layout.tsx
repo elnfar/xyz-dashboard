@@ -5,6 +5,9 @@ import { getSessionUser } from "@/app/_actions/user";
 import dynamic from "next/dynamic";
 import { getProjects } from "@/app/_actions/getProjects";
 import Providers from "@/components/providers/progress-provider";
+import { checkIsAuthenticated } from "@/lib/checkIsAuthenticated";
+import { redirect } from "next/navigation";
+import { checkIsOnboarded } from "@/lib/isOnboarded";
 
 const Modal = dynamic(() => import('@/components/global/modal'), {
   ssr: false,
@@ -31,11 +34,30 @@ export default async function DashboardLayout({children, params}:{
     params: { workplaceSlug: string };
 }) {
 
+  const user = await getSessionUser();
   const { workplaceSlug } = params
 
-  const user = await getSessionUser();
+  if(user?.tenant.name !== workplaceSlug)  {
+    throw new Error("No such a workplace found!")
+  }
+  
+
+  
   const projects = await getProjects()
 
+  const isAuthenticated = await checkIsAuthenticated();
+  const isOnboarded = await checkIsOnboarded();
+  
+
+  if(!isAuthenticated) {
+    redirect('/');
+  }
+
+  if(!isOnboarded) {
+    redirect('/onboarding');
+  }
+
+  
  
   return (
     <Providers>      

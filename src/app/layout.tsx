@@ -2,8 +2,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
-import Providers from "@/components/providers/progress-provider";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,7 +18,6 @@ export default async function RootLayout({
 }>) 
 {
 
-  
 
   return (
       <html lang="en" className=" bg-[rgb(25,25,25)]">      

@@ -1,17 +1,11 @@
 "use client"
 
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useStore } from "zustand";
 import { Button } from "@/components/ui/button";
 import { Menu } from "@/components/global/menu"; 
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
-import Image from "next/image";
-import { SidebarToggle } from "./sidebar-toggle";
-
-
 import { Idle, User } from "@prisma/client";
-import { Avatar } from "../ui/avatar";
 import { UserProfile } from "./Avatar";
 
 
@@ -35,8 +29,10 @@ export function Sidebar({user,workplaceSlug}:{
         sidebar?.isOpen === false ? "w-[90px]" : "w-72"
       )}
     >
-      {/* <SidebarToggle isOpen={sidebar?.isOpen} setIsOpen={sidebar?.setIsOpen} /> */}
-      <div  onMouseEnter={() => sidebar.setIsOpen?.()} onMouseLeave={() => sidebar.setIsOpen?.()}  className="relative h-full flex flex-col px-3 py-4 overflow-y-auto shadow-md dark:shadow-zinc-800">
+      <div 
+          onMouseEnter={() => sidebar.setIsOpen(true)}
+          onMouseLeave={() => sidebar.setIsOpen(false)}
+          className="relative h-full flex flex-col px-3 py-4 overflow-y-auto shadow-md dark:shadow-zinc-800">
         <Button
           className={cn(
             "transition-transform ease-in-out duration-300 mb-1",
@@ -45,19 +41,10 @@ export function Sidebar({user,workplaceSlug}:{
           variant="link"
           asChild
         >
-          <Link href="/dashboard" className="flex items-center gap-2" >
-            <div className={` ${sidebar.isOpen ? 'hidden' :'block'}`}><UserProfile/></div>
-            <h1
-              className={cn(
-                "font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",
-                sidebar?.isOpen === false
-                  ? "-translate-x-96 opacity-0 hidden"
-                  : "translate-x-0 opacity-100"
-              )}
-            >
-              <Image width={200} height={200} src="/signdia.svg" alt=""/>
-            </h1>
-          </Link>
+            <div className="flex items-center justify-between w-full">
+              <div className={` ${sidebar.isOpen}`}><UserProfile userSrc={user.image || ''}/></div>
+              <div className={` ${sidebar.isOpen ? 'block text-white text-md font-bold border-2 rounded-lg py-1 px-4' : 'hidden'}`}>{workplaceSlug}</div>
+            </div>
         </Button>
         <Menu workplaceSlug={workplaceSlug} isOpen={sidebar?.isOpen} user={user}/>
       </div>

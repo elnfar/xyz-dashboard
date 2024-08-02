@@ -35,13 +35,8 @@ import { prismaClient } from "./lib/prisma";
       },
       async  signIn({account,profile}) {
         if (!profile?.email) {
-          console.log("ERROR HAPPENED HERE");
-          
           throw new Error('No profile')
         }
-
-        console.log(profile.email);
-        
 
         const inviteKey = cookies().get('invite_key')?.value
         await prismaClient.user.upsert({
@@ -52,6 +47,7 @@ import { prismaClient } from "./lib/prisma";
             email: profile.email,
             name: profile.name,
             role: inviteKey ? 'USER' : 'OWNER',
+            image:profile.picture,
             tenant: inviteKey
             ? {
                 connect: {
