@@ -15,7 +15,6 @@ interface UserSession {
 }
 
 export default async function page() {
-
   const user = await getSessionUser();
   const team = await prisma.tenant.findFirst({
     where: {
@@ -39,13 +38,7 @@ export default async function page() {
   return (
     <main className="">
       <div className="py-12">
-
-
         <div className="mx-auto max-w-7xl space-y-5">
-
-
-
-
           <div className="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <div
@@ -65,13 +58,16 @@ export default async function page() {
           </div>
 
           <div className="flex items-center gap-x-4">
-          <div className="border-2 w-fit px-4 py-2">
-            <p className="sm">Invite your team members: {'https://app.siiz.xyz/' + user?.tenant.inviteKey}</p> 
+            <div className="border-2 w-fit px-4 py-2">
+              <p className="sm">
+                Invite your team members:{" "}
+                {"https://app.siiz.xyz/" + user?.tenant.inviteKey}
+              </p>
+            </div>
+            <Button variant="secondary" className="bg-white text-black">
+              Copy
+            </Button>
           </div>
-          <Button variant="secondary" className="bg-white text-black">Copy</Button>
-        </div>
-
-
         </div>
       </div>
     </main>

@@ -13,7 +13,7 @@ export default async function page({
   };
 }) {
   const user = await getSessionUser();
-
+  
   const singleProject = await prisma.project.findUnique({
     where: {
       id: params.id,

@@ -1,4 +1,5 @@
 import { ArrowBigDownDash, Cloud, CogIcon, FingerprintIcon, Lock, Server } from "lucide-react"
+import Image from "next/image"
 
   
   const features = [
@@ -47,7 +48,7 @@ import { ArrowBigDownDash, Cloud, CogIcon, FingerprintIcon, Lock, Server } from 
         </div>
         <div className="relative overflow-hidden pt-16">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <img
+            <Image
               alt="App screenshot"
               src="/z.png"
               width={2432}
