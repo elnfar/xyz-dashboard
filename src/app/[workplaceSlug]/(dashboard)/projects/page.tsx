@@ -1,11 +1,7 @@
-
 import { getProjects } from '@/app/_actions/getProjects';
 import ProjectSingle from './_components/project-single'
 import ButtonClient from '@/components/global/ButtonClient'
-import AuthenticationWrapper from '@/lib/wrappers/auth-wrapper';
 
-
-export const revalidate = 3600
 
 
 export default async function page() {

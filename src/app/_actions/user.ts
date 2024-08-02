@@ -16,6 +16,9 @@ export const getSessionUser = cache(async () => {
     include: {
       tenant: true,
     },
+    cacheStrategy:{
+      ttl:360
+    }
   });
 
   return user;

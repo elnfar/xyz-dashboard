@@ -1,3 +1,4 @@
+import { getTeamMembers } from "@/app/_actions/getTeamMembers";
 import { getSessionUser } from "@/app/_actions/user";
 import { Button } from "@/components/ui/button";
 import { PrismaClient } from "@prisma/client";
@@ -15,17 +16,16 @@ interface UserSession {
 }
 
 export default async function page() {
-  const user = await getSessionUser();
-  const team = await prisma.tenant.findFirst({
-    where: {
-      id: user?.tenant.id,
-    },
-    include: {
-      users: true,
-      issues: true,
-      projects: true,
-    },
-  });
+
+  // const [user, team] = Promise.all([
+  //   getSessionUser();
+  //  getTeamMembers()
+  // ])
+
+  // const user = await getSessionUser();
+
+  const team = await getTeamMembers();
+  
 
   const DONE = team?.issues.filter((item) => item.category === "DONE").length;
   const stats = [
@@ -61,7 +61,7 @@ export default async function page() {
             <div className="border-2 w-fit px-4 py-2">
               <p className="sm">
                 Invite your team members:{" "}
-                {"https://app.siiz.xyz/invite/" + user?.tenant.inviteKey}
+                {"https://app.siiz.xyz/invite/" + team?.inviteKey}
               </p>
             </div>
             <Button variant="secondary" className="bg-white text-black">
@@ -72,16 +72,4 @@ export default async function page() {
       </div>
     </main>
   );
-}
-
-function greetUser({ name }: { name: any }) {
-  const now = new Date();
-
-  const hours = now.getHours();
-
-  if (hours >= 0 && hours < 6) {
-    return `Good night ${name}`;
-  } else {
-    return `Good day ${name}`;
-  }
 }
