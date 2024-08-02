@@ -58,8 +58,10 @@ export default async function DashboardLayout({children, params}:{
   }
 
   
- 
+
+
   return (
+
     <Providers>      
       <div className=' bg-[rgb(25,25,25)]'>
         <div className='flex justify-between'>

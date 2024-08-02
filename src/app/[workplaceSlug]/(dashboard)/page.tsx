@@ -1,10 +1,17 @@
+// import { getSessionUser } from "@/app/_actions/user";
+// import { redirect } from "next/navigation";
+
+// export default async function page() {
+
+//   const user = await getSessionUser()
+
+//   redirect('/')
+
+// }
+
+
 export default function page() {
-
-
   return (
-    <div>
-      <h1>Welcome to your dashboard, home page!</h1>
-      <p>Navigate through pages to explore the dashboard!</p>
-    </div>
+    <div>page</div>
   )
 }
