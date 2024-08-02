@@ -8,7 +8,7 @@ export default async function page() {
   const user = await getSessionUser();
 
   if (isAuthenticated) {
-    redirect(`/${user?.tenant.name}`);
+    redirect(`/${user?.tenant.name}/dashboard`);
   } else {
     return <LoginPage />;
   }

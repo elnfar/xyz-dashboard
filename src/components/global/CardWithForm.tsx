@@ -27,7 +27,7 @@ import {
 export function CardWithForm() {
   
   return (
-    <Card className="w-[350px]">
+    <Card className="w-[350px] text-black">
       <CardHeader>
         <CardTitle>Create a project</CardTitle>
         <CardDescription>Deploy your new project in one-click.</CardDescription>
@@ -37,7 +37,7 @@ export function CardWithForm() {
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" placeholder="Name of your project" />
+              <Input id="name" name="name" placeholder="Name of your project" className="text-black"/>
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="industry">Industry</Label>

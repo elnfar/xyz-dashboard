@@ -20,7 +20,6 @@ export function IssueDialog({ projectId,users }:{
 
   return (
     <Card className="w-[450px]">
-
       <CardHeader>
         <CardTitle>Create an issue</CardTitle>
         <CardDescription>Fill in the details and create your issues to work on it!</CardDescription>
@@ -29,17 +28,17 @@ export function IssueDialog({ projectId,users }:{
           <CardContent>
           <div className="grid w-full items-center gap-4">
           <div className="">
-            <Input id="title" name="title" placeholder="New project" className="col-span-3" />
+            <Input id="title" name="title" placeholder="New project" className="col-span-3 text-black" />
           </div>
 
           <div className="">
-            <Input id="projectId" type="hidden" name="projectId" value={projectId}/>
+            <Input id="projectId" type="hidden" name="projectId" value={projectId} className="text-black"/>
           </div>
           <div className="">
-            <textarea id="description" name="description" placeholder="Project description" className=" w-full p-4 border focus-within:normal-case active:normal-case" rows={12} cols={48}/>
+            <textarea id="description" name="description" placeholder="Project description" className=" w-full p-4 border focus-within:normal-case active:normal-case text-black" rows={12} cols={48}/>
           </div>
 
-          <select  name="userId" id="userId" className="mt-2 border-2 px-4 py-3">
+          <select  name="userId" id="userId" className="mt-2 border-2 px-4 py-3 text-black">
               {users.map((user) => (
                 <option key={user.id} value={user.id}>
                   {user.name || user.email} 
