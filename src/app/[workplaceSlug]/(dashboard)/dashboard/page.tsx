@@ -1,31 +1,11 @@
 import { getTeamMembers } from "@/app/_actions/getTeamMembers";
-import { getSessionUser } from "@/app/_actions/user";
 import { Button } from "@/components/ui/button";
-import { PrismaClient } from "@prisma/client";
-import { withAccelerate } from "@prisma/extension-accelerate";
-const prisma = new PrismaClient().$extends(withAccelerate());
-
-interface UserSession {
-  name: string;
-  email: string;
-  image: string | null;
-  id: string;
-  tenant: {
-    id: string;
-  };
-}
+import { Tooltip } from "./_components/tooltip";
 
 export default async function page() {
 
-  // const [user, team] = Promise.all([
-  //   getSessionUser();
-  //  getTeamMembers()
-  // ])
-
-  // const user = await getSessionUser();
 
   const team = await getTeamMembers();
-  
 
   const DONE = team?.issues.filter((item) => item.category === "DONE").length;
   const stats = [
@@ -39,6 +19,7 @@ export default async function page() {
     <main className="">
       <div className="py-12">
         <div className="mx-auto max-w-7xl space-y-5">
+
           <div className="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <div
@@ -67,6 +48,15 @@ export default async function page() {
             <Button variant="secondary" className="bg-white text-black">
               Copy
             </Button>
+          </div>
+
+          <div className="max-w-3xl">
+            <h2 className="text-3xl py-4">Recently joined members</h2>
+                <div className=" flex items-center">
+                {team?.users.map((item) => (
+                  <Tooltip people={item} key={item.id}/>
+                ))}
+            </div>
           </div>
         </div>
       </div>

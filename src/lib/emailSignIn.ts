@@ -8,4 +8,4 @@ export const handleEmailSignIn = async (email: string) => {
   } catch (error) {
     throw error;
   }
-};
+}

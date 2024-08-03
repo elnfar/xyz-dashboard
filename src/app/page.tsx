@@ -4,8 +4,11 @@ import { redirect } from "next/navigation";
 import { getSessionUser } from "./_actions/user";
 
 export default async function page() {
-  const isAuthenticated = await checkIsAuthenticated();
-  const user = await getSessionUser();
+
+  const [isAuthenticated, user] = await Promise.all([
+    checkIsAuthenticated(),
+    getSessionUser()
+  ])
 
   if (isAuthenticated) {
     redirect(`/${user?.tenant.name}/dashboard`);
