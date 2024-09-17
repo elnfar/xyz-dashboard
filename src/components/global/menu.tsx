@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Idle, Tenant, User } from "@prisma/client";
 import { UserProfile } from "./Avatar";
+import { ThemeToggle } from "./theme-toggle";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -27,7 +28,8 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
   const menuList = getMenuList();
 
   return (
-    <ScrollArea className="[&>div>div[style]]:!block text-[rgb(95,95,95)]">
+    <ScrollArea className="[&>div>div[style]]:!block ">
+      
       <nav className="mt-8 h-full w-full">
         <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
           {menuList.map(({ groupLabel, menus }, index) => (
@@ -60,14 +62,14 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
                         <Tooltip delayDuration={100}>
                           <TooltipTrigger asChild>
                             <Button
-                              className="w-full justify-start h-10 mb-1 "
+                              className="w-full justify-start h-10 mb-1 bg-dark dark:text-white"
                               asChild
                             >
                               <Link href={`/${workplaceSlug}/${href}`}>
                                 <span
                                   className={cn(isOpen === false ? "" : "mr-4")}
                                 >
-                                  <Icon size={20} />
+                                  <Icon size={20} className=""/>
                                 </span>
                                 <p
                                   className={cn(
@@ -88,7 +90,9 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
                             </TooltipContent>
                           )}
                         </Tooltip>
+                        
                       </TooltipProvider>
+                      
                     </div>
                   ) : (
                     <div className="w-full" key={index}>
@@ -101,9 +105,11 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
                     </div>
                   )
               )}
+              
             </li>
+            
           ))}
-
+      
           <li className="w-full grow flex items-end">
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
@@ -132,7 +138,9 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
                   <TooltipContent side="right">Sign out</TooltipContent>
                 )}
               </Tooltip>
+              
             </TooltipProvider>
+
           </li>
         </ul>
       </nav>

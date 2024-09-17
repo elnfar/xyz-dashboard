@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeToggle } from "@/components/global/theme-toggle";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,7 +21,7 @@ export default async function RootLayout({
 
 
   return (
-      <html lang="en" className=" bg-[rgb(25,25,25)] text-white">      
+      <html lang="en" className="">      
         <body className={inter.className}>
             {children}
         </body>

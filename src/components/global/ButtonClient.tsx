@@ -8,7 +8,8 @@ export default function ButtonClient({title}:{
     title:string,
 }) {
 
- const {onOpen } = useProjectModal()
+ const {onOpen} = useProjectModal()
+ 
   return (
    <Button onClick={onOpen} variant="secondary" className='bg-white text-black'>{title}</Button>
   )

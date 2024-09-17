@@ -13,7 +13,7 @@ export const CustomKanban = ({ issues,projectId, users, projects }: { issues: Is
 
 
   return (
-    <div className="w-full text-neutral-50 ">
+    <div className=" text-neutral-50">
       <ProjectNavbar projectId={projectId} users={users} issues={issues} projects={projects}/>
       <Board issues={issues} />
     </div>
@@ -179,7 +179,7 @@ const Column = ({ title, headingColor, cards, column, setCards }: ColumnProps) =
   const filteredCards = cards.filter((c) => c.category === column);
 
   return (
-    <div className="w-[35%]  shrink-0 px-4 border-[rgb(95,95,95)] border-r-[1px]">
+    <div className="w-[35%]  shrink-0 px-4 border-[rgb(95,95,95)] border-r-[1px] overflow-y-hidden">
       <div className="mb-3 flex items-center justify-between">
         <h3 className={`font-medium ${headingColor}`}>{title}</h3>
         <span className="rounded text-sm text-neutral-400">

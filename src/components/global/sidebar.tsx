@@ -7,6 +7,7 @@ import { Menu } from "@/components/global/menu";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { Idle, User } from "@prisma/client";
 import { UserProfile } from "./Avatar";
+import { ThemeToggle } from "./theme-toggle";
 
 
 type IdleType = {
@@ -47,6 +48,7 @@ export function Sidebar({user,workplaceSlug}:{
             </div>
         </Button>
         <Menu workplaceSlug={workplaceSlug} isOpen={sidebar?.isOpen} user={user}/>
+        
       </div>
     </aside>
   );

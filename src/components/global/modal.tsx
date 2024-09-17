@@ -17,6 +17,8 @@ export default function Modal({
   
   const {isOpen} = useProjectModal();  
 
+  if(!isOpen) return null;
+
 
   return (
     <div className={`${isOpen ? 'fixed inset-0 flex justify-center items-center z-50 bg-black/30 backdrop-blur-sm' : 'hidden'}`}>

@@ -1,5 +1,4 @@
 import { prismaClient as prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
 import Modal from "@/components/global/modal";
 import { IssueDialog } from "../_components/create-issue-dialog";
 import { CustomKanban } from "@/components/global/dnd";
@@ -39,12 +38,7 @@ export default async function page({
 
   return (
     <div className="">
-      <Modal
-        title="Add issue"
-        disabled
-        projects={singleProject}
-        body={<IssueDialog projectId={singleProject.id} users={users || []} />}
-      />
+
       <CustomKanban
         issues={issues}
         projectId={params.id}
