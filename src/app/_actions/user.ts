@@ -6,7 +6,7 @@ import { cache } from "react";
 
 const client = new PrismaClient();
 
-export const getSessionUser = cache(async () => {
+export const getSessionUser = async () => {
   const session = await auth();
 
   const user = await prismaClient.user.findUnique({
@@ -22,4 +22,4 @@ export const getSessionUser = cache(async () => {
   });
 
   return user;
-});
+};

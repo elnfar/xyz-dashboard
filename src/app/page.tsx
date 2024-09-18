@@ -10,9 +10,16 @@ export default async function page() {
     getSessionUser()
   ])
 
-  if (isAuthenticated) {
+  console.log(user?.isOnboarded, "OBD");
+  
+
+  if(isAuthenticated && !user?.isOnboarded) {
+    redirect(`/onboarding`);
+  }
+
+  if (isAuthenticated && user?.isOnboarded) {
     redirect(`/${user?.tenant.name}/dashboard`);
-  } else {
+  }else {
     return <LoginPage />;
   }
 }

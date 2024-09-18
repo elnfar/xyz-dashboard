@@ -29,19 +29,20 @@ export default async function DashboardLayout({
   const isAuthenticated = await checkIsAuthenticated();
   const isOnboarded = await checkIsOnboarded();
 
+  console.log(isOnboarded);
+  
+
   if (!isAuthenticated) {
     redirect("/");
   }
 
-  if (!isOnboarded) {
+  if (!user?.isOnboarded) {
     redirect("/onboarding");
   }
-
   
-
-  // if (user?.tenant.name !== workplaceSlug) {
-  //   throw new Error("No such a workplace found!");
-  // }
+  if (user?.tenant.name !== workplaceSlug) {
+    throw new Error("No such a workplace found!");
+  }
 
   return (
     <Providers>

@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { prismaClient } from "@/lib/prisma";
 import { getSessionUser } from "./user";
+import { revalidatePath } from "next/cache";
 
 
 
@@ -36,5 +37,5 @@ export async function updateWorkplaceSlug(data:FormData) {
                 }
             })
         ])
-            
+        revalidatePath('/onboarding');
 }

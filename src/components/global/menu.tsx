@@ -1,8 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import { Ellipsis, LogOut } from "lucide-react";
-import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { getMenuList  } from "@/data";
 import { Button } from "@/components/ui/button";
@@ -14,9 +11,10 @@ import {
   TooltipContent,
   TooltipProvider
 } from "@/components/ui/tooltip";
-import { Idle, Tenant, User } from "@prisma/client";
-import { UserProfile } from "./Avatar";
-import { ThemeToggle } from "./theme-toggle";
+import { User } from "@prisma/client";
+import { signOut } from "@/auth";
+import { SignOutBtn } from "./SignOutButton";
+import { handleGoogleSignOut } from "@/lib/googleSignIn";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -24,8 +22,9 @@ interface MenuProps {
   workplaceSlug: string;
 }
 
-export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
+export function Menu({ workplaceSlug, isOpen }: MenuProps) {
   const menuList = getMenuList();
+  
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block ">
@@ -116,7 +115,7 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
                 <TooltipTrigger asChild>
                   <div className="">
                     <Button
-                      // onClick={() => signOut()}
+                      onClick={() => handleGoogleSignOut()}
                       variant="outline"
                       className="w-full justify-center h-10 mt-5"
                     >
@@ -135,7 +134,7 @@ export function Menu({ workplaceSlug, isOpen, user }: MenuProps) {
                   </div>
                 </TooltipTrigger>
                 {isOpen === false && (
-                  <TooltipContent side="right">Sign out</TooltipContent>
+                  <TooltipContent side="right" onClick={() => handleGoogleSignOut()}>Sign out</TooltipContent>
                 )}
               </Tooltip>
               

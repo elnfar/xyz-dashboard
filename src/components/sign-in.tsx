@@ -21,35 +21,12 @@ export const SignInPage: React.FC = () => {
   };
 
   return (
-    <div className="signin-page">
-      <div className="signin-card">
-        <h2>Sign In</h2>
+    <div >
+      <div className="min-w-[400px] min-h-fit shadow-md px-4 py-6 rounded-md">
+        <h2 className="text-2xl py-4">Sign In</h2>
         <div className="form-container">
-          <form className="email-signin-form" onSubmit={handleSubmit}>
-            <input
-              className="form-input"
-              type="email"
-              maxLength={320}
-              placeholder="Email Address"
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setFormData({ email: event.target.value })
-              }
-              disabled={isPending}
-              required
-            />
-            <button className="submit-button" type="submit">
-              Sign in with email
-            </button>
-          </form>
-
-          <div className="divider">
-            <div className="line"></div>
-            <span className="or">or</span>
-            <div className="line"></div>
-          </div>
-
           <div className="social-logins">
-            <button className="google" onClick={() => handleGoogleSignIn()}>
+            <button className="py-2 px-2 flex items-center gap-4 border-2 w-full rounded-lg border-red-800" onClick={() => handleGoogleSignIn()}>
               <FcGoogle className="google-icon" />
               Sign in with Google
             </button>
