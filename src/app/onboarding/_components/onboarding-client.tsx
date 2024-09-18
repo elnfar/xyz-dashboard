@@ -3,8 +3,8 @@
 import { updateWorkplaceSlug } from '@/app/_actions/updateWorkplaceSlug';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-
 
 
 import React, { useState } from 'react';
@@ -18,9 +18,6 @@ export default function OnboardingClient() {
   const [steps, setSteps] = useState(Steps.TENANT_NAME);
   const [tenantName, setTenantName] = useState('');
   const [size, setSize] = useState('0');
-  const router = useRouter()
-
-
 
   async function onNext(event: React.FormEvent) {
     event.preventDefault(); 
@@ -33,14 +30,13 @@ export default function OnboardingClient() {
       formData.append('size',size);
       try { 
         await updateWorkplaceSlug(formData);
+
       } catch (error) {
         console.error('Failed to update workplace slug:', error);
       }
     }
 
   }
-
-
 
 
   
