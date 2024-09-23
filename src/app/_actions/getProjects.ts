@@ -16,7 +16,7 @@ export const getProjects = cache(async() => {
             tenant:true,
         },
         cacheStrategy:{
-            ttl:120
+            ttl:30
         }
     })
     return projects;

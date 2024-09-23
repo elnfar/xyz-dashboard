@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
+import useIssuesModal from "@/hooks/useIssuesModal";
 import useProjectModal from "@/hooks/useProjectModal";
 import { User } from "@prisma/client";
 
@@ -22,7 +23,7 @@ export function IssueDialog({
   projectId: string;
   users: User[];
 }) {
-  const { onClose } = useProjectModal();
+  const { onClose } = useIssuesModal();
 
   return (
     <Card className="w-[450px">
@@ -39,7 +40,7 @@ export function IssueDialog({
               <Input
                 id="title"
                 name="title"
-                placeholder="New project"
+                placeholder="New issue"
                 className="col-span-3 text-white"
               />
             </div>
@@ -57,7 +58,7 @@ export function IssueDialog({
               <textarea
                 id="description"
                 name="description"
-                placeholder="Project description"
+                placeholder="Issue description"
                 className=" w-full p-4 border focus-within:normal-case active:normal-case text-white"
                 rows={12}
                 cols={48}

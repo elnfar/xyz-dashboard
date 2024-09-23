@@ -4,7 +4,7 @@ import ButtonClient from "@/components/global/ButtonClient";
 
 import dynamic from "next/dynamic";
 
-const Modal = dynamic(() => import("@/components/global/modal"), {
+const ProjectModal = dynamic(() => import("@/app/[workplaceSlug]/(dashboard)/projects/_components/project-modal"), {
   ssr: false,
 });
 
@@ -21,13 +21,6 @@ export default async function page() {
 
   return (
     <>
-      <Modal
-        title="New project"
-        disabled
-        projects={projects}
-        body={<CardWithForm />}
-      />
-
       <div>
         <ProjectNavbar />
 

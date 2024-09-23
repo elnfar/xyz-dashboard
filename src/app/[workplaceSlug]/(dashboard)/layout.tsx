@@ -5,6 +5,10 @@ import Providers from "@/components/providers/progress-provider";
 import { checkIsAuthenticated } from "@/lib/checkIsAuthenticated";
 import { redirect } from "next/navigation";
 import { checkIsOnboarded } from "@/lib/isOnboarded";
+import ProjectModal from "./projects/_components/project-modal";
+import { CardWithForm } from "@/components/global/CardWithForm";
+import { getProjects } from "@/app/_actions/getProjects";
+import IssueModal from "./projects/_components/issue-modal";
 
 
 
@@ -25,7 +29,7 @@ export default async function DashboardLayout({
 }) {
   const user = await getSessionUser();
   const { workplaceSlug } = params;
-
+  const projects = await getProjects();
   const isAuthenticated = await checkIsAuthenticated();
   const isOnboarded = await checkIsOnboarded();
 
@@ -52,6 +56,9 @@ export default async function DashboardLayout({
             <Sidebar user={user!} workplaceSlug={workplaceSlug} />
           </div>
           <div className="h-screen w-full px-4">
+            <ProjectModal
+              projects={projects}
+            />
             {children}
           </div>
         </div>

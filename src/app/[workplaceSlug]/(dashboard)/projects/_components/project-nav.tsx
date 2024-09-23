@@ -1,14 +1,12 @@
 'use client';
 
-import ButtonClient from '@/components/global/ButtonClient';
-import useProjectModal from '@/hooks/useProjectModal'; // Adjust path as needed
+import { Button } from '@/components/ui/button';
+import useIssuesModal from '@/hooks/useIssuesModal';
 import { Issue, Project } from '@prisma/client';
 import { User } from 'next-auth';
 
 export default function ProjectNavbar({ issues, projectId, users, projects }: { issues?: Issue[], projectId?: string, users?: User[], projects?: Project | null }) {
-  const { onOpen, isOpen } = useProjectModal(); // Access onOpen from Zustand store
-
-  
+  const { onOpen, isOpen } = useIssuesModal();
 
   return (
     <nav className='py-4 px-4'>
@@ -21,7 +19,7 @@ export default function ProjectNavbar({ issues, projectId, users, projects }: { 
             <span>Issues {issues?.length}</span>
           </div>
         </div>
-        <div className='flex justify-end ml-auto'><ButtonClient title='Add issue'/></div> 
+        <Button onClick={onOpen}>Add issue</Button>
       </div>
     </nav>
   );
