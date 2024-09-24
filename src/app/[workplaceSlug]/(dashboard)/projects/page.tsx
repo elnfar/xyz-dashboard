@@ -2,20 +2,6 @@ import { getProjects } from "@/app/_actions/getProjects";
 import ProjectSingle from "./_components/project-single";
 import ButtonClient from "@/components/global/ButtonClient";
 
-import dynamic from "next/dynamic";
-
-const ProjectModal = dynamic(() => import("@/app/[workplaceSlug]/(dashboard)/projects/_components/project-modal"), {
-  ssr: false,
-});
-
-const CardWithForm = dynamic(
-  () =>
-    import("@/components/global/CardWithForm").then((mod) => mod.CardWithForm),
-  {
-    ssr: false,
-  }
-);
-
 export default async function page() {
   const projects = await getProjects();
 
@@ -43,3 +29,6 @@ function ProjectNavbar() {
     </nav>
   );
 }
+
+
+// test comment
