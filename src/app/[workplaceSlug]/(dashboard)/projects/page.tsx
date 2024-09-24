@@ -29,6 +29,5 @@ function ProjectNavbar() {
     </nav>
   );
 }
-//test2
 
 // test comment
