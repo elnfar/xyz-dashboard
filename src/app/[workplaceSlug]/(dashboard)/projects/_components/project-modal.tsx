@@ -3,13 +3,8 @@
 import { CardWithForm } from '@/components/global/CardWithForm';
 import Modal from '@/components/global/modal';
 import useProjectModal from '@/hooks/useProjectModal';
-import { Project } from '@prisma/client';
 
-interface ProjectModalInterface {
-  projects: Project | Project[];
-}
-
-export default function ProjectModal({projects}:ProjectModalInterface) {
+export default function ProjectModal() {
   
   const {isOpen,onClose} = useProjectModal();  
 
@@ -22,7 +17,6 @@ export default function ProjectModal({projects}:ProjectModalInterface) {
         isOpen={isOpen}
         title="Create a project"
         body={<CardWithForm/>}
-        projects={projects}
         onClose={onClose}
       />
     </div>

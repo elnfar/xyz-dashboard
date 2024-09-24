@@ -56,9 +56,7 @@ export default async function DashboardLayout({
             <Sidebar user={user!} workplaceSlug={workplaceSlug} />
           </div>
           <div className="h-screen w-full px-4">
-            <ProjectModal
-              projects={projects}
-            />
+            <ProjectModal/>
             {children}
           </div>
         </div>

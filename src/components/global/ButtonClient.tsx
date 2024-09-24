@@ -1,16 +1,19 @@
-'use client';
+"use client";
 
-import useProjectModal from '@/hooks/useProjectModal';
-import React from 'react'
-import { Button } from '../ui/button';
+import useProjectModal from "@/hooks/useProjectModal";
+import React from "react";
+import { Button } from "../ui/button";
 
-export default function ButtonClient({title}:{
-    title:string,
-}) {
+export default function ButtonClient({ title }: { title: string }) {
+  const { onOpen } = useProjectModal();
 
- const {onOpen} = useProjectModal()
- 
   return (
-   <Button onClick={onOpen} variant="secondary" className='bg-white text-black'>{title}</Button>
-  )
+    <Button
+      onClick={onOpen}
+      variant="secondary"
+      className="bg-white text-black"
+    >
+      {title}
+    </Button>
+  );
 }
