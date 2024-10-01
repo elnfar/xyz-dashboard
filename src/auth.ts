@@ -4,10 +4,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { cookies } from "next/headers";
 import { prismaClient } from "./lib/prisma";
 
-
-
-
-
   export const {
     handlers: { GET, POST },
     signIn,

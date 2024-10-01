@@ -6,10 +6,7 @@ import { checkIsAuthenticated } from "@/lib/checkIsAuthenticated";
 import { redirect } from "next/navigation";
 import { checkIsOnboarded } from "@/lib/isOnboarded";
 import ProjectModal from "./projects/_components/project-modal";
-import { CardWithForm } from "@/components/global/CardWithForm";
 import { getProjects } from "@/app/_actions/getProjects";
-import IssueModal from "./projects/_components/issue-modal";
-
 
 
 export async function generateMetadata({ params }: { params: string }) {
@@ -29,11 +26,11 @@ export default async function DashboardLayout({
 }) {
   const user = await getSessionUser();
   const { workplaceSlug } = params;
-  const projects = await getProjects();
   const isAuthenticated = await checkIsAuthenticated();
   const isOnboarded = await checkIsOnboarded();
 
-  console.log(isOnboarded);
+  console.log(isOnboarded, 'IS');
+  console.log(isAuthenticated, 'ZAAA');
   
 
   if (!isAuthenticated) {

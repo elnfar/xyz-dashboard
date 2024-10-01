@@ -1,6 +1,7 @@
 import { getTeamMembers } from "@/app/_actions/getTeamMembers";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "./_components/tooltip";
+import ClipboardButton from "./_components/clipboard";
 
 export default async function page() {
 
@@ -15,6 +16,8 @@ export default async function page() {
     { name: "Success rate", value: "98.5%" },
   ];
 
+
+  const TEAM_ACCESS_KEY=`${"https://app.siizz.xyz/invite/" + team?.inviteKey}`
   return (
     <main className="">
       <div className="py-12">
@@ -42,12 +45,10 @@ export default async function page() {
             <div className="border-2 w-fit px-4 py-2">
               <p className="sm">
                 Invite your team members:{" "}
-                {"https://app.siizz.xyz/invite/" + team?.inviteKey}
+                {TEAM_ACCESS_KEY}
               </p>
             </div>
-            <Button variant="secondary" className="bg-white text-black">
-              Copy
-            </Button>
+            <ClipboardButton value={TEAM_ACCESS_KEY}/>
           </div>
 
           <div className="max-w-3xl">

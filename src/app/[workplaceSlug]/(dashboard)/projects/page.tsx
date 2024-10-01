@@ -5,6 +5,8 @@ import ButtonClient from "@/components/global/ButtonClient";
 export default async function page() {
   const projects = await getProjects();
 
+  if(!projects) return "No projects found"
+
   return (
     <>
       <div>
