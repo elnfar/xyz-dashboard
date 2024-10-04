@@ -16,9 +16,6 @@ export async function getTeamMembers() {
           issues: true,
           projects: true,
         },
-        cacheStrategy:{
-          ttl:360
-        }
       });
 
       return team;
