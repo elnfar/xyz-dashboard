@@ -1,5 +1,4 @@
 import { getTeamMembers } from "@/app/_actions/getTeamMembers";
-import { Button } from "@/components/ui/button";
 import { Tooltip } from "./_components/tooltip";
 import ClipboardButton from "./_components/clipboard";
 
@@ -13,8 +12,10 @@ export default async function page() {
     { name: "Issues", value: team?.issues.length },
     { name: "Issues Done", value: DONE || 0 },
     { name: "Team size", value: team?.users.length },
-    { name: "Success rate", value: "98.5%" },
+    { name: "Success rate", value: (DONE! / team?.issues.length!) * 100 },
   ];
+
+  
 
 
   const TEAM_ACCESS_KEY=`${"https://app.siizz.xyz/invite/" + team?.inviteKey}`

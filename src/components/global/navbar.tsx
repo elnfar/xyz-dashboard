@@ -1,22 +1,53 @@
-import Link from 'next/link'
-import React from 'react'
-import { Button } from '../ui/button'
+'use client'
 
-export default function Navbar() {
+import { User } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+
+
+const links = [
+  {
+    title:'Home',
+    href:"/dashboard"
+  },
+  {
+    title:'Projects',
+    href:"/projects"
+  },
+  {
+    title:'Team',
+    href:"/team"
+  },
+  
+]
+
+export default function Navbar({workspaceSlug}:{
+  workspaceSlug:string
+}) {
+
+  const path = usePathname();
+  
   
   return (
-    <nav className='fixed z-50 text-white w-full p-5'>
-      <div className='flex justify-between items-center w-full'>
-        <div className='flex items-center gap-x-12'>
-           <h1 className='text-2xl font-bold underline'>Aiiz</h1>
-        </div>  
+    <header>
+      <div className="flex items-center justify-between px-4 border-b-2">
 
-        <div>
-          <Button asChild variant="outline" className='rounded-full'>
-            <Link href="/dashboard">Get started</Link>
-          </Button>
-        </div>
+        <div className="flex items-center space-x-12">
+          <h1 className="text-4xl font-extrabold">Siizz</h1>
+
+          <ul className="flex items-center gap-4 text-sm font-semibold">
+              {links.map((item) => (
+                <li className="py-5" key={item.href}><Link href={`/${workspaceSlug}/${item.href}`}>{item.title}</Link></li>
+              ))}
+          </ul>
+          </div>
+
+          <div>
+            <User/>
+          </div>
       </div>
-    </nav>
+
+
+    </header>
   )
 }

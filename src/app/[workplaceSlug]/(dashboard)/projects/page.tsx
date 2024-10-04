@@ -1,6 +1,7 @@
 import { getProjects } from "@/app/_actions/getProjects";
 import ProjectSingle from "./_components/project-single";
 import ButtonClient from "@/components/global/ButtonClient";
+import ProjectModal from "./_components/project-modal";
 
 export default async function page() {
   const projects = await getProjects();
@@ -9,6 +10,7 @@ export default async function page() {
 
   return (
     <>
+    <ProjectModal/>
       <div>
         <ProjectNavbar />
 
