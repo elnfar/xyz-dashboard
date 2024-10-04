@@ -15,7 +15,7 @@ export default async function page() {
 
         <div className="flex flex-col gap-2">
         {issues?.map((item) => (
-            <div className="p-4 border-2">
+            <div className="p-4 border-2" key={item.id}>
                 <h1>title: {item.title}</h1>
                 <p>description: {item.description}</p>
             </div>
